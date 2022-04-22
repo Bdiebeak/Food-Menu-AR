@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Burger
   m_EditorClassIdentifier: 
   photo: {fileID: 21300000, guid: 0ba8e2c90aabeca4495adcc471b28796, type: 3}
-  name: "\u0411\u0423\u0420\u0413\u0415\u0420 \"\u0420\u041E\u0417\u041E\u0427\u041A\u0410\""
-  kkal: Kkal...........................................812g
-  fats: Fats...........................................48g
-  carb: Carb..........................................50g
-  protein: Protein......................................44g
+  foodName: Cheesburger
+  calories: 256.7
+  fat: 9.7
+  carbohydrates: 29.4
+  proteins: 13.5

@@ -7,42 +7,26 @@ using UnityEngine.UI;
 
 public class FoodObjectDisplay : MonoBehaviour
 {
-    /// <summary>
-    /// ScriptableObject текущего объекта еды.
-    /// </summary>
-    [SerializeField]
-    private FoodObject foodObject;
+    [SerializeField] private FoodInfo foodInfo;
 
     [Header("UI")]
-    [SerializeField]
-    private GameObject canvasInfoUI;
-
-    [SerializeField]
-    private Image foodImageUI;
-
-    [SerializeField]
-    private TextMeshProUGUI nameUI;
-
-    [SerializeField]
-    private TextMeshProUGUI kkalUI;
-
-    [SerializeField]
-    private TextMeshProUGUI fatsUI;
-
-    [SerializeField]
-    private TextMeshProUGUI carbUI;
-
-    [SerializeField]
-    private TextMeshProUGUI proteinUI;
+    [SerializeField] private GameObject canvasInfoUI;
+    [SerializeField] private Image foodImageUI;
+    [SerializeField] private TextMeshProUGUI nameUI;
+    [SerializeField] private TextMeshProUGUI kkalUI;
+    [SerializeField] private TextMeshProUGUI fatsUI;
+    [SerializeField] private TextMeshProUGUI carbUI;
+    [SerializeField] private TextMeshProUGUI proteinUI;
 
     private void OnMouseDown()
     {
         canvasInfoUI.SetActive(true);
-        foodImageUI.sprite = foodObject.photo;
-        nameUI.SetText(foodObject.name);
-        kkalUI.SetText(foodObject.kkal);
-        fatsUI.SetText(foodObject.fats);
-        carbUI.SetText(foodObject.carb);
-        proteinUI.SetText(foodObject.protein);
+        
+        foodImageUI.sprite = foodInfo.Photo;
+        nameUI.SetText(foodInfo.FoodName);
+        kkalUI.SetText(foodInfo.Calories);
+        fatsUI.SetText(foodInfo.Fat);
+        carbUI.SetText(foodInfo.Carbohydrates);
+        proteinUI.SetText(foodInfo.Proteins);
     }
 }

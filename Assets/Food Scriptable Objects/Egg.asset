@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Egg
   m_EditorClassIdentifier: 
   photo: {fileID: 21300000, guid: 0d34e9d33343df44098fcdff0f474a13, type: 3}
-  name: "\u0416\u0410\u0420\u0415\u041D\u041E\u0415 \u042F\u0418\u0427\u041A\u041E"
-  kkal: Kkal...........................................101g
-  fats: Fats...........................................7,45g
-  carb: Carb..........................................1,34g
-  protein: Protein......................................6,76g
+  foodName: Egg
+  calories: c_value
+  fat: f_value
+  carbohydrates: c_value
+  proteins: p_value
