@@ -10,6 +10,7 @@
   ],
   "dependencies": {
     "com.unity.collab-proxy": "2.2.0",
+    "com.unity.feature.ar": "1.0.1",
     "com.unity.ide.rider": "3.0.28",
     "com.unity.test-framework": "1.1.33",
     "com.unity.textmeshpro": "3.0.8",
