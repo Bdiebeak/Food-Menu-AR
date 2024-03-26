@@ -146,9 +146,11 @@ namespace ARMenu.Editor
 			{
 				// Bake all required object into separated files.
 				CameraBaker.SaveCameraRender(Path.Combine(_savePath, $"{_rootObject.name}.png"), _cameraObject, image, tempRT);
-				foreach (Transform additional in _additionalObjects)
+
+				// Bake additional objects
+				foreach (Transform parent in _rootObject)
 				{
-					additional.gameObject.SetActive(false);
+					parent.gameObject.SetActive(false);
 				}
 				foreach (Transform additional in _additionalObjects)
 				{
@@ -156,9 +158,9 @@ namespace ARMenu.Editor
 					CameraBaker.SaveCameraRender(Path.Combine(_savePath, $"{additional.name}.png"), _cameraObject, image, tempRT);
 					additional.gameObject.SetActive(false);
 				}
-				foreach (Transform additional in _additionalObjects)
+				foreach (Transform parent in _rootObject)
 				{
-					additional.gameObject.SetActive(true);
+					parent.gameObject.SetActive(true);
 				}
 				AssetDatabase.Refresh();
 			}
