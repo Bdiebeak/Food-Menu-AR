@@ -1,12 +1,15 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Object = UnityEngine.Object;
 
 namespace ARMenu.Editor
 {
+	// TODO: refactoring
 	public class DishBakerWindow : EditorWindow
 	{
 		public VisualTreeAsset ui;
@@ -14,7 +17,7 @@ namespace ARMenu.Editor
 		private TextField _pathTextField;
 
 		private Camera _cameraObject;
-		private Vector2Int _resolution;
+		private Vector2Int _resolution = new (1024, 1024);
 		private Transform _rootObject;
 		private List<Transform> _additionalObjects = new();
 		private string _savePath;
@@ -49,6 +52,7 @@ namespace ARMenu.Editor
 
 		private void InitializeResolutionField(Vector2IntField resolutionField)
 		{
+			resolutionField.value = _resolution;
 			resolutionField.RegisterCallback<ChangeEvent<Vector2Int>>(evt =>
 			{
 				_resolution = evt.newValue;
@@ -103,9 +107,25 @@ namespace ARMenu.Editor
 				((ObjectField)element).value = _additionalObjects[i];
 				((ObjectField)element).RegisterValueChangedCallback((value) =>
 				{
-					_additionalObjects[i] = (Transform)value.newValue;
+					_additionalObjects[i] = (Transform)value?.newValue;
 				});
 			};
+			listView.RegisterCallback<DragUpdatedEvent>(evt =>
+			{
+				DragAndDrop.visualMode = DragAndDropVisualMode.Generic;
+			});
+			listView.RegisterCallback<DragPerformEvent>(evt =>
+			{
+				var objects = DragAndDrop.objectReferences;
+				foreach (Object obj in objects)
+				{
+					if (obj is GameObject gameObject)
+					{
+						_additionalObjects.Add(gameObject.transform);
+					}
+				}
+				listView.RefreshItems();
+			});
 		}
 
 		private void InitializeBakeButton(Button bakeButton)
@@ -118,21 +138,40 @@ namespace ARMenu.Editor
 
 		private void BakeImages()
 		{
-			CameraBaker.SaveCameraRender(Path.Combine(_savePath, $"{_rootObject.name}.png"),
-										 _resolution.x, _resolution.y);
-			foreach (Transform additional in _additionalObjects)
-			{
-				additional.gameObject.SetActive(false);
-			}
+			// Create texture for camera baker.
+			Texture2D image = new(_resolution.x, _resolution.y);
+			RenderTexture tempRT = new(_resolution.x, _resolution.y, 24, RenderTextureFormat.ARGB32);
 
-			foreach (Transform additional in _additionalObjects)
+			try
 			{
-				additional.gameObject.SetActive(true);
-				CameraBaker.SaveCameraRender(Path.Combine(_savePath, $"{_rootObject.name}.png"),
-											 _resolution.x, _resolution.y);
+				// Bake all required object into separated files.
+				CameraBaker.SaveCameraRender(Path.Combine(_savePath, $"{_rootObject.name}.png"), _cameraObject, image, tempRT);
+				foreach (Transform additional in _additionalObjects)
+				{
+					additional.gameObject.SetActive(false);
+				}
+				foreach (Transform additional in _additionalObjects)
+				{
+					additional.gameObject.SetActive(true);
+					CameraBaker.SaveCameraRender(Path.Combine(_savePath, $"{additional.name}.png"), _cameraObject, image, tempRT);
+					additional.gameObject.SetActive(false);
+				}
+				foreach (Transform additional in _additionalObjects)
+				{
+					additional.gameObject.SetActive(true);
+				}
+				AssetDatabase.Refresh();
 			}
-
-			AssetDatabase.Refresh();
+			catch (Exception e)
+			{
+				Debug.LogException(e);
+			}
+			finally
+			{
+				// Cleanup textures.
+				DestroyImmediate(image);
+				DestroyImmediate(tempRT);
+			}
 		}
 	}
 }
