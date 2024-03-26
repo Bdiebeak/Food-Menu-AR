@@ -10,7 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 441132a194774482a8928e1b53dc42ba, type: 3}
-  m_Name: CheesburgerLettuce
+  m_Name: Lettuce
   m_EditorClassIdentifier: 
-  image: {fileID: 0}
-  title: 
+  image: {fileID: 21300000, guid: 9a028ae5717cc104cba526a1f71315cc, type: 3}
+  title: Lettuce
+  description: Crisp and vibrant lettuce leaves provide a refreshing crunch and a
+    burst of green.

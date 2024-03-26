@@ -12,12 +12,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b522884fdb37be42910b7c0b5efbc24, type: 3}
   m_Name: BigSpecial
   m_EditorClassIdentifier: 
-  image: {fileID: 0}
-  title: 
-  description: 
-  calories: 0
-  weight: 0
-  macronutrients:
-    carbohydrates: 0
-    fats: 0
-    proteins: 0
+  image: {fileID: 21300000, guid: a8bb3655105e5504d830fbfa8dd1ec6b, type: 3}
+  title: Big Special Burger
+  description: Experience ultimate satisfaction with our Big Special Burger, featuring
+    a succulent beef patty, crispy bacon, fried egg, and fresh toppings.
+  weight: 450
+  nutritionalInfo:
+    calories: 1300
+    carbohydrates: 65
+    fats: 80
+    proteins: 65
+  ingredients:
+  - {fileID: 11400000, guid: d67623f7eaf3c274e8a9dfe3dad1aeaa, type: 2}
+  - {fileID: 11400000, guid: 364ad1f7103ff6149a14d4ba83b0512a, type: 2}
+  - {fileID: 11400000, guid: 8cf584145c117344ebce8738e8451c4c, type: 2}
+  - {fileID: 11400000, guid: 6ca2e2047671b274ebe70316f99e539d, type: 2}
+  - {fileID: 11400000, guid: 1d5ba7b2341ee014e924a530dccd81af, type: 2}
+  - {fileID: 11400000, guid: e8ccc680b43f83e4f8c35df55e21b2c0, type: 2}
+  - {fileID: 11400000, guid: 696f931dee8537f44b2d6d0ecd06ff73, type: 2}
+  - {fileID: 11400000, guid: 7990ce40fee2c1c4ab8f2c36a2b91180, type: 2}
