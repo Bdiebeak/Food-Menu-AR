@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
-namespace ARMenu.Runtime.Data
+namespace ARMenu.Scripts.Runtime.Data
 {
 	[CreateAssetMenu(fileName = nameof(Dish), menuName = "ScriptableObjects/" + nameof(Dish))]
 	public class Dish : ScriptableObject
@@ -8,8 +9,8 @@ namespace ARMenu.Runtime.Data
 		public Sprite image;
 		public string title;
 		public string description;
-		public float calories;
 		public float weight;
-		public Macronutrients macronutrients;
+		public NutritionalInfo nutritionalInfo;
+		public List<Ingredient> ingredients;
 	}
 }

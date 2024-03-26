@@ -1,10 +1,11 @@
 ﻿using System;
 
-namespace ARMenu.Runtime.Data
+namespace ARMenu.Scripts.Runtime.Data
 {
 	[Serializable]
-	public class Macronutrients
+	public class NutritionalInfo
 	{
+		public float calories;
 		public float carbohydrates;
 		public float fats;
 		public float proteins;

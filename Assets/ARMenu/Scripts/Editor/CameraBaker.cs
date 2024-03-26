@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using UnityEngine;
 
-namespace ARMenu.Editor
+namespace ARMenu.Scripts.Editor
 {
 	public static class CameraBaker
 	{

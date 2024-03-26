@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using Object = UnityEngine.Object;
 
-namespace ARMenu.Editor
+namespace ARMenu.Scripts.Editor
 {
 	// TODO: refactoring
 	public class DishBakerWindow : EditorWindow
