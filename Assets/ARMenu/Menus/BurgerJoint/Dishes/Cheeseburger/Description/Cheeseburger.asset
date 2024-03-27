@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b522884fdb37be42910b7c0b5efbc24, type: 3}
   m_Name: Cheeseburger
   m_EditorClassIdentifier: 
+  prefab: {fileID: 5587850728997606781, guid: f7acb65df194c674e83f095b40b20c87, type: 3}
   image: {fileID: 21300000, guid: e49b13e0595bd8e42a731a596b9ab4ed, type: 3}
   title: Cheeseburger
   description: Indulge in our mouthwatering Cheeseburger, boasting a succulent beef
