@@ -6,6 +6,7 @@ namespace ARMenu.Scripts.Runtime.Data
 	[CreateAssetMenu(fileName = nameof(Dish), menuName = "ScriptableObjects/" + nameof(Dish))]
 	public class Dish : ScriptableObject
 	{
+		public GameObject prefab;
 		public Sprite image;
 		public string title;
 		public string description;
