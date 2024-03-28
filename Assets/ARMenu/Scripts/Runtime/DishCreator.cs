@@ -1,4 +1,4 @@
-using System;
+using System.Collections.Generic;
 using System.Linq;
 using ARMenu.Scripts.Runtime.Data;
 using UnityEngine;
@@ -13,6 +13,8 @@ namespace ARMenu.Scripts.Runtime
         [SerializeField]
         private ARTrackedImageManager trackedImageManager;
 
+        private Dictionary<string, GameObject> _spawnedDishes = new();
+
         private void OnEnable()
         {
             trackedImageManager.trackedImagesChanged += OnTrackedImageChanged;
@@ -25,18 +27,37 @@ namespace ARMenu.Scripts.Runtime
 
         private void OnTrackedImageChanged(ARTrackedImagesChangedEventArgs obj)
         {
-            // TODO: only one object at time.
             // TODO: cleanup on tracked image removed and unfocused.
             foreach (ARTrackedImage addedImage in obj.added)
             {
-                // I use GUID here to avoid dependencies from naming.
-                DishToImageNode dishToImageNode = menu.dishes.FirstOrDefault(x => Guid.Parse(x.imageGuid) == addedImage.referenceImage.textureGuid);
+                Debug.Log("BDIEBEAK: On Tracked Image Added.");
+                DishToImageNode dishToImageNode = menu.dishes.FirstOrDefault(x => x.arImage.name.Equals(addedImage.referenceImage.texture.name));
                 if (dishToImageNode == null)
                 {
+                    Debug.LogError($"BDIEBEAK: Can't find dish for required image {addedImage.name}.");
                     continue;
                 }
-                Instantiate(dishToImageNode.dish.prefab, addedImage.transform);
+                GameObject dish = Instantiate(dishToImageNode.dish.prefab, addedImage.transform);
+                _spawnedDishes[addedImage.name] = dish;
             }
+
+            // foreach (ARTrackedImage addedImage in obj.updated)
+            // {
+            //     if (_spawnedDishes.TryGetValue(addedImage.name, out GameObject dish) == false)
+            //     {
+            //         continue;
+            //     }
+            //     dish.transform.position = addedImage.transform.position;
+            // }
+            //
+            // foreach (ARTrackedImage addedImage in obj.removed)
+            // {
+            //     if (_spawnedDishes.TryGetValue(addedImage.name, out GameObject dish) == false)
+            //     {
+            //         continue;
+            //     }
+            //     Destroy(dish);
+            // }
         }
     }
 }

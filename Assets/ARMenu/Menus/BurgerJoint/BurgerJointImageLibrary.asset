@@ -23,7 +23,7 @@ MonoBehaviour:
     m_SerializedTextureGuid:
       m_GuidLow: 438217810035578647
       m_GuidHigh: 5589284068502432936
-    m_Size: {x: 0, y: 0}
+    m_Size: {x: 0.15, y: 0.15}
     m_SpecifySize: 0
     m_Name: BigSpecialBurger
     m_Texture: {fileID: 2800000, guid: c56b9717dcc60614a86cd63b3f20914d, type: 3}
@@ -33,7 +33,7 @@ MonoBehaviour:
     m_SerializedTextureGuid:
       m_GuidLow: 18092225924620713706
       m_GuidHigh: 15449812807117890138
-    m_Size: {x: 0, y: 0}
+    m_Size: {x: 0.15, y: 0.15}
     m_SpecifySize: 0
     m_Name: Cheeseburger
     m_Texture: {fileID: 2800000, guid: 29217eea7f9ffb145ae28a36e4c268d6, type: 3}
