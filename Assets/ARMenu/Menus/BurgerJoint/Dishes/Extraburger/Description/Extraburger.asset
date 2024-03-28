@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5b522884fdb37be42910b7c0b5efbc24, type: 3}
-  m_Name: BigSpecial
+  m_Name: Extraburger
   m_EditorClassIdentifier: 
   prefab: {fileID: 1424565209676324907, guid: 31d234fe70f2d5241ba28171b114683a, type: 3}
   image: {fileID: 21300000, guid: a8bb3655105e5504d830fbfa8dd1ec6b, type: 3}
-  title: Big Special Burger
-  description: Experience ultimate satisfaction with our Big Special Burger, featuring
-    a succulent beef patty, crispy bacon, fried egg, and fresh toppings.
+  title: Extraburger
+  description: Experience ultimate satisfaction with our Extraburger, featuring a
+    succulent beef patty, crispy bacon, fried egg, and fresh toppings.
   weight: 450
   nutritionalInfo:
     calories: 1300

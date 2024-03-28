@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8494742648588349775}
   m_Layer: 0
-  m_Name: BigSpecialBurger
+  m_Name: Extraburger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
