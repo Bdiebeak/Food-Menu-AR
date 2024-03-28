@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using ARMenu.Scripts.Runtime.Data;
 using UnityEngine;
@@ -24,15 +25,17 @@ namespace ARMenu.Scripts.Runtime
 
         private void OnTrackedImageChanged(ARTrackedImagesChangedEventArgs obj)
         {
-            // TODO: refactoring
+            // TODO: only one object at time.
+            // TODO: cleanup on tracked image removed and unfocused.
             foreach (ARTrackedImage addedImage in obj.added)
             {
-                Dish dish = menu.dishes.FirstOrDefault(x => string.Equals(x.prefab.name, addedImage.referenceImage.name));
-                if (dish == null)
+                // I use GUID here to avoid dependencies from naming.
+                DishToImageNode dishToImageNode = menu.dishes.FirstOrDefault(x => Guid.Parse(x.imageGuid) == addedImage.referenceImage.textureGuid);
+                if (dishToImageNode == null)
                 {
                     continue;
                 }
-                Instantiate(dish.prefab, addedImage.transform);
+                Instantiate(dishToImageNode.dish.prefab, addedImage.transform);
             }
         }
     }
