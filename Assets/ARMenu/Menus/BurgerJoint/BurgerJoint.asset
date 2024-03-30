@@ -13,9 +13,7 @@ MonoBehaviour:
   m_Name: BurgerJoint
   m_EditorClassIdentifier: 
   dishes:
-  - arImage: {fileID: 2800000, guid: c56b9717dcc60614a86cd63b3f20914d, type: 3}
-    imageGUID: c56b9717dcc60614a86cd63b3f20914d
+  - arImage: {fileID: 2800000, guid: e2a87048d797e3341969adbd2428fa86, type: 3}
     dish: {fileID: 11400000, guid: adc3971600d56644ca98d3183156176e, type: 2}
-  - arImage: {fileID: 2800000, guid: 29217eea7f9ffb145ae28a36e4c268d6, type: 3}
-    imageGUID: 29217eea7f9ffb145ae28a36e4c268d6
+  - arImage: {fileID: 2800000, guid: 7935a333ab4f7224295f3b6090bc1406, type: 3}
     dish: {fileID: 11400000, guid: 824c40ceff549bd4fbc65d4debc0c6ac, type: 2}

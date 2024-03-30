@@ -3,6 +3,7 @@ using System.Linq;
 using ARMenu.Scripts.Runtime.Data;
 using UnityEngine;
 using UnityEngine.XR.ARFoundation;
+using UnityEngine.XR.ARSubsystems;
 
 namespace ARMenu.Scripts.Runtime
 {
@@ -11,18 +12,33 @@ namespace ARMenu.Scripts.Runtime
         [SerializeField]
         private Menu menu;
         [SerializeField]
-        private ARTrackedImageManager trackedImageManager;
+        private XRReferenceImageLibrary imageLibrary;
+
+        private ARTrackedImageManager _trackedImageManager;
 
         private Dictionary<string, GameObject> _spawnedDishes = new();
 
+        private void Awake()
+        {
+            InitializeTrackedImageManager();
+        }
+
+        private void InitializeTrackedImageManager()
+        {
+            _trackedImageManager = gameObject.AddComponent<ARTrackedImageManager>();
+            _trackedImageManager.referenceLibrary = imageLibrary;
+            _trackedImageManager.requestedMaxNumberOfMovingImages = 2;
+            _trackedImageManager.enabled = true;
+        }
+
         private void OnEnable()
         {
-            trackedImageManager.trackedImagesChanged += OnTrackedImageChanged;
+            _trackedImageManager.trackedImagesChanged += OnTrackedImageChanged;
         }
 
         private void OnDisable()
         {
-            trackedImageManager.trackedImagesChanged -= OnTrackedImageChanged;
+            _trackedImageManager.trackedImagesChanged -= OnTrackedImageChanged;
         }
 
         private void OnTrackedImageChanged(ARTrackedImagesChangedEventArgs obj)
@@ -41,23 +57,23 @@ namespace ARMenu.Scripts.Runtime
                 _spawnedDishes[addedImage.name] = dish;
             }
 
-            // foreach (ARTrackedImage addedImage in obj.updated)
-            // {
-            //     if (_spawnedDishes.TryGetValue(addedImage.name, out GameObject dish) == false)
-            //     {
-            //         continue;
-            //     }
-            //     dish.transform.position = addedImage.transform.position;
-            // }
-            //
-            // foreach (ARTrackedImage addedImage in obj.removed)
-            // {
-            //     if (_spawnedDishes.TryGetValue(addedImage.name, out GameObject dish) == false)
-            //     {
-            //         continue;
-            //     }
-            //     Destroy(dish);
-            // }
+            foreach (ARTrackedImage addedImage in obj.updated)
+            {
+                if (_spawnedDishes.TryGetValue(addedImage.name, out GameObject dish) == false)
+                {
+                    continue;
+                }
+                dish.transform.position = addedImage.transform.position;
+            }
+
+            foreach (ARTrackedImage addedImage in obj.removed)
+            {
+                if (_spawnedDishes.TryGetValue(addedImage.name, out GameObject dish) == false)
+                {
+                    continue;
+                }
+                Destroy(dish);
+            }
         }
     }
 }
