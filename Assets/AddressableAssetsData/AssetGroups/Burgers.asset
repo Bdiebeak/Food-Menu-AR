@@ -23,6 +23,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - Burgers
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dc512a8a3abd0274e9c4c2516671b686
+    m_Address: BurgersMenu/Fourth
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Burgers
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: b0ec763825f456544a9f768b32b5a591, type: 2}
   m_SchemaSet:

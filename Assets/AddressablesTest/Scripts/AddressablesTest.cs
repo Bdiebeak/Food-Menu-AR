@@ -11,7 +11,7 @@ namespace AddressablesTest.Scripts
 	public class AddressablesTest : MonoBehaviour
 	{
 		private const string BurgerTag = "Burgers";
-		private const string BurgerPath = "Burgers/First/BurgerFirst.txt";
+		private const string BurgerPath = "BurgersMenu/First/BurgerFirst.txt";
 
 		[ContextMenu("Initialize")]
 		public async void Initialize()
