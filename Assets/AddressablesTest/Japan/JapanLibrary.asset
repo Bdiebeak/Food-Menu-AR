@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46fe6b4489a64f1418bdeca5599b690c, type: 3}
+  m_Name: JapanLibrary
+  m_EditorClassIdentifier: 
+  assets:
+  - name: First
+    file:
+      m_AssetGUID: 090402dc568f0d1468dc1f3df7625b33
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+  - name: Second
+    file:
+      m_AssetGUID: 37150f8275492e64fbf19622348d2d76
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0

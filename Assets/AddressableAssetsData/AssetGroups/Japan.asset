@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Japan
+  m_EditorClassIdentifier: 
+  m_GroupName: Japan
+  m_Data:
+    m_SerializedData: []
+  m_GUID: dacd9ec3d8216254f8446de6b7a9b3d9
+  m_SerializeEntries:
+  - m_GUID: cbddaa31a8c900940bea21532d908ed5
+    m_Address: JapanMenu
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Japan
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: b0ec763825f456544a9f768b32b5a591, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 896d22ef3797d9f40adfafe62e913034, type: 2}
+    - {fileID: 11400000, guid: af19ce7e95e55304eac63c3c346f183b, type: 2}

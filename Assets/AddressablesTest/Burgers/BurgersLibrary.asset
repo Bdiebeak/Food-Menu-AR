@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46fe6b4489a64f1418bdeca5599b690c, type: 3}
+  m_Name: BurgersLibrary
+  m_EditorClassIdentifier: 
+  assets:
+  - name: First
+    file:
+      m_AssetGUID: b9ec8d37454cc094c9620afb10900377
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+  - name: Second
+    file:
+      m_AssetGUID: 82004540f42757446a12022f52e921e2
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+  - name: Third
+    file:
+      m_AssetGUID: 8888e4a8ad25e2f4a9ed7266a3e322ee
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
