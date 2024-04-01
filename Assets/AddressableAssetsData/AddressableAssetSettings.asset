@@ -15,7 +15,7 @@ MonoBehaviour:
   m_DefaultGroup: 19d1e8c2ab44c704a9154dc4515bfd0f
   m_currentHash:
     serializedVersion: 2
-    Hash: 8bcb3dc908c112aff36164ecc2006a80
+    Hash: 3a315ece56195aac364f046875094b41
   m_OptimizeCatalogSize: 0
   m_BuildRemoteCatalog: 0
   m_BundleLocalCatalog: 0
@@ -48,7 +48,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 8cdef8a127d005f4395c92e03ebc289e, type: 2}
   - {fileID: 11400000, guid: 79b521b96b4189448a612fa81f8c8809, type: 2}
   - {fileID: 11400000, guid: 993e32c270eed8540bf2f09d63d6f3df, type: 2}
-  - {fileID: 11400000, guid: 1014ff6d68db11e448139bb7ad13fd58, type: 2}
   m_BuildSettings:
     m_CompileScriptsInVirtualMode: 0
     m_CleanupStreamingAssetsAfterBuilds: 1
@@ -105,7 +104,7 @@ MonoBehaviour:
     m_LabelNames:
     - default
     - Burgers
-    - Japan
+    - General
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: b56f49d3bc6015e44ade9da2984b34a1, type: 2}
@@ -141,7 +140,7 @@ MonoBehaviour:
           m_Key: ContentRoot
         - m_AssemblyName: mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
           m_ClassName: System.Boolean
-          m_Data: True
+          m_Data: False
           m_Key: IsEnabled
         - m_AssemblyName: mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
           m_ClassName: System.String

@@ -17,17 +17,30 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: dfdc9fab0920b324bbc245f1cda4ef57
   m_SerializeEntries:
-  - m_GUID: 847692f64de4cc3468fd7754ee98db87
-    m_Address: BurgersMenu
+  - m_GUID: c91309361c15a1945b58bbc24a58ddc8
+    m_Address: Extraburger
     m_ReadOnly: 0
     m_SerializedLabels:
     - Burgers
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: dc512a8a3abd0274e9c4c2516671b686
-    m_Address: BurgersMenu/Fourth
+  - m_GUID: 2200cbf87f66d34469168dbc1b87ab12
+    m_Address: Cheeseburger
     m_ReadOnly: 0
     m_SerializedLabels:
     - Burgers
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 23f97cc3477f0e244876405b941cd517
+    m_Address: Ingredients
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Burgers
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 15eb580eba61f034fb70bf8c4e0369cf
+    m_Address: General
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Burgers
+    - General
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: b0ec763825f456544a9f768b32b5a591, type: 2}

@@ -664,8 +664,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b68102e284a0c540a4438d0aed7b3b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  menu: {fileID: 11400000, guid: 90e22a20a2adb4047b58405ce31cd98e, type: 2}
-  imageLibrary: {fileID: 11400000, guid: 94a3302908549a644baf1026b0ad580e, type: 2}
+  menuKey: General/BurgersMenu.asset
+  imageLibraryKey: General/BurgerJointImageLibrary.asset
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
