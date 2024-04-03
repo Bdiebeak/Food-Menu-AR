@@ -1,97 +1,105 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using ARMenu.Scripts.Runtime.Data;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.XR.ARFoundation;
-using UnityEngine.XR.ARSubsystems;
 
 namespace ARMenu.Scripts.Runtime
 {
+    [RequireComponent(typeof(ARTrackedImageManager))]
     public class DishCreator : MonoBehaviour
     {
         [SerializeField]
-        private string menuKey = "General/BurgersMenu.asset";
-        [SerializeField]
-        private string imageLibraryKey = "General/BurgerJointImageLibrary.asset";
+        private ARTrackedImageManager trackedImageManager;
 
-        private Menu _menu;
-        private XRReferenceImageLibrary _imageLibrary;
-        private ARTrackedImageManager _trackedImageManager;
-
+        private DishImageLibrary _imageLibrary;
         private Dictionary<string, GameObject> _spawnedDishes = new();
 
-        [ContextMenu("Initialize")]
-        private void Initialize()
+        public void Construct(DishImageLibrary menu)
         {
-            InitializeAddressablesAsync();
-            InitializeTrackedImageManager();
-        }
+            _imageLibrary = menu;
 
-        private async void InitializeAddressablesAsync()
-        {
-            AsyncOperationHandle<Menu> menuLoadHandler = Addressables.LoadAssetAsync<Menu>(menuKey);
-            await menuLoadHandler.Task;
-            _menu = menuLoadHandler.Result;
-
-            AsyncOperationHandle<XRReferenceImageLibrary> imageLibraryHandler = Addressables.LoadAssetAsync<XRReferenceImageLibrary>(imageLibraryKey);
-            await imageLibraryHandler.Task;
-            _imageLibrary = imageLibraryHandler.Result;
-        }
-
-        private void InitializeTrackedImageManager()
-        {
-            _trackedImageManager = gameObject.AddComponent<ARTrackedImageManager>();
-            _trackedImageManager.referenceLibrary = _imageLibrary;
-            _trackedImageManager.requestedMaxNumberOfMovingImages = 2;
-            _trackedImageManager.enabled = true;
+            // TODO: should it be here?
+            trackedImageManager.referenceLibrary = _imageLibrary;
+            trackedImageManager.enabled = true;
         }
 
         private void OnEnable()
         {
-            _trackedImageManager.trackedImagesChanged += OnTrackedImageChanged;
+            trackedImageManager.trackedImagesChanged += OnTrackedImageChanged;
         }
 
         private void OnDisable()
         {
-            _trackedImageManager.trackedImagesChanged -= OnTrackedImageChanged;
+            trackedImageManager.trackedImagesChanged -= OnTrackedImageChanged;
         }
 
         private void OnTrackedImageChanged(ARTrackedImagesChangedEventArgs obj)
         {
-            // TODO: cleanup on tracked image removed and unfocused.
             foreach (ARTrackedImage addedImage in obj.added)
             {
-                DishToImageNode dishToImageNode = _menu.dishes.FirstOrDefault(x => x.arImage.name.Equals(addedImage.referenceImage.texture.name));
-                if (dishToImageNode == null)
+                ReferenceImageToDishNode referenceImageToDishNode = _imageLibrary.imageToDishNodes.FirstOrDefault(x => x.arImage.name.Equals(addedImage.referenceImage.texture.name));
+                if (referenceImageToDishNode == null)
                 {
                     Debug.LogError($"BDIEBEAK: Can't find dish for required image {addedImage.name}.");
                     continue;
                 }
-
-                Debug.Log((string)dishToImageNode.dish.prefab.RuntimeKey);
-                // GameObject dish = Instantiate(dishToImageNode.dish.prefab, addedImage.transform);
-                // _spawnedDishes[addedImage.name] = dish;
+                OnTrackedImageAddedAsyncHandler(referenceImageToDishNode.dish.prefabPath, addedImage);
             }
 
-            foreach (ARTrackedImage addedImage in obj.updated)
-            {
-                if (_spawnedDishes.TryGetValue(addedImage.name, out GameObject dish) == false)
-                {
-                    continue;
-                }
-                dish.transform.position = addedImage.transform.position;
-            }
-
-            foreach (ARTrackedImage addedImage in obj.removed)
-            {
-                if (_spawnedDishes.TryGetValue(addedImage.name, out GameObject dish) == false)
-                {
-                    continue;
-                }
-                Destroy(dish);
-            }
+            // TODO: cleanup on tracked image removed and unfocused.
+            // foreach (ARTrackedImage addedImage in obj.updated)
+            // {
+            //     if (_spawnedDishes.TryGetValue(addedImage.name, out GameObject dish) == false)
+            //     {
+            //         continue;
+            //     }
+            //     dish.transform.position = addedImage.transform.position;
+            // }
+            //
+            // foreach (ARTrackedImage addedImage in obj.removed)
+            // {
+            //     if (_spawnedDishes.TryGetValue(addedImage.name, out GameObject dish) == false)
+            //     {
+            //         continue;
+            //     }
+            //     Destroy(dish);
+            // }
         }
+
+        private async void OnTrackedImageAddedAsyncHandler(string dishPrefabKey, ARTrackedImage trackedImage)
+        {
+            GameObject prefab = await LoadAssetAsync<GameObject>(dishPrefabKey);
+            GameObject dish = Instantiate(prefab, trackedImage.transform);
+            _spawnedDishes[trackedImage.name] = dish;
+        }
+
+        private void Reset()
+        {
+            trackedImageManager = GetComponent<ARTrackedImageManager>();
+        }
+
+#region DEBUG
+
+        [SerializeField]
+        private string libraryKey = "General/BurgersLibrary.asset";
+
+        [ContextMenu("Initialize")]
+        private async void Initialize()
+        {
+            DishImageLibrary menu = await LoadAssetAsync<DishImageLibrary>(libraryKey);
+            Construct(menu);
+        }
+
+        private async Task<T> LoadAssetAsync<T>(string key)
+        {
+            AsyncOperationHandle<T> assetLoadHandler = Addressables.LoadAssetAsync<T>(key);
+            return await assetLoadHandler.Task;
+        }
+
+#endregion
     }
 }

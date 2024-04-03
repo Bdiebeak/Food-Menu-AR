@@ -612,6 +612,7 @@ GameObject:
   - component: {fileID: 1683097038}
   - component: {fileID: 1683097037}
   - component: {fileID: 1683097039}
+  - component: {fileID: 1683097040}
   m_Layer: 0
   m_Name: XR Origin
   m_TagString: Untagged
@@ -664,8 +665,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b68102e284a0c540a4438d0aed7b3b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  menuKey: General/BurgersMenu.asset
-  imageLibraryKey: General/BurgerJointImageLibrary.asset
+  trackedImageManager: {fileID: 1683097040}
+  libraryKey: General/BurgersLibrary.asset
+--- !u!114 &1683097040
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1683097035}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4dea56a9eaadd1c439095de4f9a371cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SerializedLibrary: {fileID: 0}
+  m_MaxNumberOfMovingImages: 1
+  m_TrackedImagePrefab: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

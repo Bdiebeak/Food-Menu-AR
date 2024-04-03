@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
 
 namespace ARMenu.Scripts.Runtime.Data
 {
@@ -12,8 +11,9 @@ namespace ARMenu.Scripts.Runtime.Data
 		public float weight;
 		public NutritionalInfo nutritionalInfo;
 		public List<Ingredient> ingredients;
+		// TODO: auto bake paths
 		[Space]
-		public AssetReferenceGameObject prefab;
-		public AssetReferenceSprite image;
+		public string prefabPath;
+		public string imagePath;
 	}
 }

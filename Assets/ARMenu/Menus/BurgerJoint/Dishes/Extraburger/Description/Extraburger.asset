@@ -30,13 +30,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e8ccc680b43f83e4f8c35df55e21b2c0, type: 2}
   - {fileID: 11400000, guid: 696f931dee8537f44b2d6d0ecd06ff73, type: 2}
   - {fileID: 11400000, guid: 7990ce40fee2c1c4ab8f2c36a2b91180, type: 2}
-  prefab:
-    m_AssetGUID: 31d234fe70f2d5241ba28171b114683a
-    m_SubObjectName: 
-    m_SubObjectType: 
-    m_EditorAssetChanged: 0
-  image:
-    m_AssetGUID: a8bb3655105e5504d830fbfa8dd1ec6b
-    m_SubObjectName: 
-    m_SubObjectType: 
-    m_EditorAssetChanged: 0
+  prefabPath: Extraburger/Prefabs/Extraburger.prefab
+  imagePath: Extraburger/Images/Extraburger.png
