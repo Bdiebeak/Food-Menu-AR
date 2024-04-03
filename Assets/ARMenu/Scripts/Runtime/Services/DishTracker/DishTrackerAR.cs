@@ -50,7 +50,6 @@ namespace ARMenu.Scripts.Runtime.Services.DishTracker
         {
             foreach (ARTrackedImage addedImage in obj.added)
             {
-                Debug.Log($"Tracked Image Added {addedImage.name}");
                 OnTrackedImageAddedAsyncHandler(addedImage);
             }
 
@@ -61,7 +60,6 @@ namespace ARMenu.Scripts.Runtime.Services.DishTracker
 
             foreach (ARTrackedImage addedImage in obj.removed)
             {
-                Debug.Log($"Tracked Image Removed {addedImage.name}");
                 OnTrackedImageRemovedHandler(addedImage);
             }
         }
@@ -83,6 +81,9 @@ namespace ARMenu.Scripts.Runtime.Services.DishTracker
             GameObject dishPrefab = await _assetProvider.LoadAssetAsync<GameObject>(linkedDish.prefabPath);
             GameObject dish = Object.Instantiate(dishPrefab, trackedImage.transform);
             _spawnedDishes[trackedImage.name] = dish;
+
+            Debug.Log($"Dish for {trackedImage.name} was spawned.\n" +
+                      $"Image size {trackedImage.transform.lossyScale}, Prefab size: {dishPrefab.transform.lossyScale}");
         }
 
         private void OnTrackedImageUpdatedHandler(ARTrackedImage trackedImage)
@@ -91,6 +92,9 @@ namespace ARMenu.Scripts.Runtime.Services.DishTracker
             {
                 return;
             }
+
+            Debug.Log($"Dish for {trackedImage.name} was updated.\n" +
+                      $"It has {trackedImage.trackingState} state and {trackedImage.transform.position} position.");
 
             if (trackedImage.trackingState == TrackingState.Tracking)
             {
@@ -110,6 +114,7 @@ namespace ARMenu.Scripts.Runtime.Services.DishTracker
             }
             Object.Destroy(dish);
             _spawnedDishes.Remove(trackedImage.name);
+            Debug.Log($"Dish for {trackedImage.name} was removed.");
         }
     }
 }
