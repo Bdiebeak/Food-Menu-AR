@@ -37,6 +37,7 @@ namespace ARMenu.Scripts.Runtime.Infrastructure
 			Instantiate(arSessionPrefab);
 
 			_assetProvider = new AssetProvider();
+			_assetProvider.Initialize();
 			_dishTracker = new DishTrackerAR(_assetProvider, imageManager);
 		}
 
