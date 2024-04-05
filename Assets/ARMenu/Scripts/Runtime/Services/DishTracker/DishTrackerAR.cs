@@ -7,145 +7,136 @@ using UnityEngine.XR.ARSubsystems;
 
 namespace ARMenu.Scripts.Runtime.Services.DishTracker
 {
-    public class DishTrackerAR : IDishTrackerAR
-    {
-        private readonly IAssetProvider _assetProvider;
-        private readonly ARTrackedImageManager _trackedImageManager;
+	public class DishTrackerAR : IDishTrackerAR
+	{
+		private readonly IAssetProvider _assetProvider;
+		private readonly ARTrackedImageManager _trackedImageManager;
 
-        private DishImageLibrary _imageLibrary;
-        private ARTrackedImage _lastTrackingImage;
-        private Dictionary<string, GameObject> _addedDishes = new();
+		private DishImageLibrary _imageLibrary;
+		private Dictionary<string, GameObject> _trackingDishes = new();
 
-        public DishTrackerAR(IAssetProvider assetProvider,
-                           ARTrackedImageManager trackedImageManager)
-        {
-            _assetProvider = assetProvider;
-            _trackedImageManager = trackedImageManager;
-        }
+		public DishTrackerAR(IAssetProvider assetProvider,
+							 ARTrackedImageManager trackedImageManager)
+		{
+			_assetProvider = assetProvider;
+			_trackedImageManager = trackedImageManager;
+		}
 
-        public void SetImageLibrary(DishImageLibrary initialLibrary)
-        {
-            if (_imageLibrary != null)
-            {
-                Debug.LogError("Reinitialization of ImageLibrary in runtime is not supported. It was already initialized.");
-                return;
-            }
+		public void SetImageLibrary(DishImageLibrary initialLibrary)
+		{
+			if (_imageLibrary != null)
+			{
+				Debug.LogError("Reinitialization of ImageLibrary in runtime is not supported. It was already initialized.");
+				return;
+			}
 
-            _imageLibrary = initialLibrary;
-            _trackedImageManager.referenceLibrary = initialLibrary;
-        }
+			_imageLibrary = initialLibrary;
+			_trackedImageManager.referenceLibrary = initialLibrary;
+		}
 
-        public void Start()
-        {
-            _trackedImageManager.trackedImagesChanged += OnTrackedImageChanged;
-            _trackedImageManager.enabled = true;
-        }
+		public void Start()
+		{
+			_trackedImageManager.trackablesChanged.AddListener(OnTrackedImageChanged);
+			_trackedImageManager.enabled = true;
+		}
 
-        public void CleanUp()
-        {
-            _trackedImageManager.trackedImagesChanged -= OnTrackedImageChanged;
-            // TODO: remove spawned dishes
-        }
+		public void CleanUp()
+		{
+			_trackedImageManager.trackablesChanged.RemoveListener(OnTrackedImageChanged);
+			CleanTrackingDishes();
+		}
 
-        private void OnTrackedImageChanged(ARTrackedImagesChangedEventArgs obj)
-        {
-            HandleAddedImages(obj.added);
-            HandleUpdatedImages(obj.updated);
-            HandleRemovedImages(obj.removed);
-        }
+		private void OnTrackedImageChanged(ARTrackablesChangedEventArgs<ARTrackedImage> eventArgs)
+		{
+			HandleAddedImages(eventArgs.added);
+			HandleUpdatedImages(eventArgs.updated);
+			HandleRemovedImages(eventArgs.removed);
+		}
 
-        /// <summary>
-        /// Added is called only once, when the subsystem find that the trackable was scanned for the first time.
-        /// We can't ignore it. We should create prefab for tracked image.
-        /// </summary>
-        /// <param name="addedImages"> Images which were added this frame. </param>
-        private void HandleAddedImages(List<ARTrackedImage> addedImages)
-        {
-            foreach (ARTrackedImage addedImage in addedImages)
-            {
-                // Get linked dish prefab.
-                if (addedImage.referenceImage.texture == null)
-                {
-                    Debug.LogError($"Can't find texture in reference image {addedImage.name}.");
-                    return;
-                }
-                string imageName = addedImage.referenceImage.texture.name;
-                if (_imageLibrary.TryGetLinkedDish(imageName, out Dish linkedDish) == false)
-                {
-                    Debug.LogError($"Can't find linked dish for {imageName} image.");
-                    return;
-                }
+		/// <summary>
+		/// Added is called only once, when the subsystem find that the trackable was scanned for the first time.
+		/// We can't ignore it. We should create prefab for tracked image.
+		/// </summary>
+		/// <param name="addedImages"> Images which were added this frame. </param>
+		private void HandleAddedImages(IReadOnlyCollection<ARTrackedImage> addedImages)
+		{
+			foreach (ARTrackedImage addedImage in addedImages)
+			{
+				// Get linked dish prefab.
+				if (addedImage.referenceImage.texture == null)
+				{
+					Debug.LogError($"Can't find texture in reference image {addedImage.name}.");
+					return;
+				}
 
-                // Spawn prefab when its tracked image was added.
-                AddDishPrefabAsync(addedImage, linkedDish);
-            }
-        }
+				string imageName = addedImage.referenceImage.texture.name;
+				if (_imageLibrary.TryGetLinkedDish(imageName, out Dish linkedDish) == false)
+				{
+					Debug.LogError($"Can't find linked dish for {imageName} image.");
+					return;
+				}
 
-        /// <summary>
-        /// Update should be called if the subsystem find that the trackable was changed.
-        /// This logic isn't determinate, because we don't know the order of updated images.
-        /// </summary>
-        /// <param name="updatedImages"> Images which were updated this frame. </param>
-        private void HandleUpdatedImages(List<ARTrackedImage> updatedImages)
-        {
-            // If last tacking image didn't change it state, don't do anything and keep show it.
-            int lastTrackingImageIndex = updatedImages.IndexOf(_lastTrackingImage);
-            if (lastTrackingImageIndex != -1)
-            {
-                if (updatedImages[lastTrackingImageIndex].trackingState == TrackingState.Tracking)
-                {
-                    return;
-                }
-            }
+				// Spawn prefab when its tracked image was added.
+				AddDishPrefabAsync(addedImage, linkedDish);
+			}
+		}
 
-            // If last tracking image did change it state, find first visible one and show it.
-            bool wasTrackingFound = false;
-            foreach (ARTrackedImage updatedImage in updatedImages)
-            {
-                if (_addedDishes.TryGetValue(updatedImage.name, out GameObject dish) == false)
-                {
-                    return;
-                }
-                if (wasTrackingFound == false &&
-                    updatedImage.trackingState == TrackingState.Tracking)
-                {
-                    wasTrackingFound = true;
-                    _lastTrackingImage = updatedImage;
-                    dish.SetActive(true);
-                }
-                else
-                {
-                    dish.SetActive(false);
-                }
-            }
-        }
+		/// <summary>
+		/// Update should be called if the subsystem find that the trackable was changed.
+		/// This logic isn't determinate, because we don't know the order of updated images.
+		/// </summary>
+		/// <param name="updatedImages"> Images which were updated this frame. </param>
+		private void HandleUpdatedImages(IReadOnlyCollection<ARTrackedImage> updatedImages)
+		{
+			foreach (ARTrackedImage updatedImage in updatedImages)
+			{
+				if (_trackingDishes.TryGetValue(updatedImage.name, out GameObject dish) == false)
+				{
+					return;
+				}
+				dish.SetActive(updatedImage.trackingState == TrackingState.Tracking);
+			}
+		}
 
-        /// <summary>
-        /// Remove should be called if the subsystem can't find the trackable again.
-        /// But it doesn't seem to remove these at all, but if it does, it would delete linked dish object.
-        /// </summary>
-        /// <param name="removedImages"> Images which were removed this frame. </param>
-        private void HandleRemovedImages(List<ARTrackedImage> removedImages)
-        {
-            foreach (ARTrackedImage removedImage in removedImages)
-            {
-                if (_addedDishes.TryGetValue(removedImage.name, out GameObject dish) == false)
-                {
-                    return;
-                }
-                _addedDishes.Remove(removedImage.name);
-                Object.Destroy(dish);
-            }
-        }
+		/// <summary>
+		/// Remove should be called if the subsystem can't find the trackable again.
+		/// But it doesn't seem to remove these at all, but if it does, it would delete linked dish object.
+		/// </summary>
+		/// <param name="removedImages"> Images which were removed this frame. </param>
+		private void HandleRemovedImages(IReadOnlyCollection<ARTrackedImage> removedImages)
+		{
+			foreach (ARTrackedImage removedImage in removedImages)
+			{
+				if (_trackingDishes.TryGetValue(removedImage.name, out GameObject dish) == false)
+				{
+					return;
+				}
 
-        private async void AddDishPrefabAsync(ARTrackedImage addedImage, Dish linkedDish)
-        {
-            GameObject dishPrefab = await _assetProvider.LoadAssetAsync<GameObject>(linkedDish.prefabPath);
-            GameObject dish = Object.Instantiate(dishPrefab, addedImage.transform);
-            _addedDishes[addedImage.name] = dish;
+				_trackingDishes.Remove(removedImage.name);
+				CleanTrackingDish(dish);
+			}
+		}
 
-            Debug.Log($"Dish for {addedImage.name} was spawned.\n" +
-                      $"Image size {addedImage.transform.lossyScale}, Prefab size: {dishPrefab.transform.lossyScale}");
-        }
-    }
+		// TODO: fix problem when instantiate is called after removed.
+		private async void AddDishPrefabAsync(ARTrackedImage addedImage, Dish linkedDish)
+		{
+			GameObject dishPrefab = await _assetProvider.LoadAssetAsync<GameObject>(linkedDish.prefabPath);
+			GameObject dish = Object.Instantiate(dishPrefab, addedImage.transform);
+			_trackingDishes[addedImage.name] = dish;
+		}
+
+		private void CleanTrackingDishes()
+		{
+			foreach (GameObject dish in _trackingDishes.Values)
+			{
+				CleanTrackingDish(dish);
+			}
+			_trackingDishes.Clear();
+		}
+
+		private void CleanTrackingDish(GameObject dish)
+		{
+			Object.Destroy(dish);
+		}
+	}
 }

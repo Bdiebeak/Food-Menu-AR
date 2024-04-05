@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
@@ -14,7 +14,7 @@ namespace ARMenu.Scripts.Runtime.Services.AssetProvider
 			Addressables.InitializeAsync();
 		}
 
-		public async Task<T> LoadAssetAsync<T>(string assetKey) where T : class
+		public async Awaitable<T> LoadAssetAsync<T>(string assetKey) where T : class
 		{
 			if (_completedOperations.TryGetValue(assetKey, out AsyncOperationHandle completeHandle))
 			{
@@ -23,7 +23,7 @@ namespace ARMenu.Scripts.Runtime.Services.AssetProvider
 			return await LoadAndCache<T>(assetKey);
 		}
 
-		private async Task<T> LoadAndCache<T>(string assetKey) where T : class
+		private async Awaitable<T> LoadAndCache<T>(string assetKey) where T : class
 		{
 			AsyncOperationHandle<T> loadingOperation = Addressables.LoadAssetAsync<T>(assetKey);
 

@@ -147,7 +147,7 @@ Light:
   serializedVersion: 11
   m_Type: 1
   m_Color: {r: 0.9998116, g: 1, b: 0.9198113, a: 1}
-  m_Intensity: 0.5
+  m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -662,6 +662,8 @@ MonoBehaviour:
   trackedImageManagerPrefab: {fileID: -9215607390198862568, guid: 644a54426acc9774fa25571db38b4b66,
     type: 3}
   arSessionPrefab: {fileID: 565495154206283671, guid: d55d9ee287403ff448aedc89859713ef,
+    type: 3}
+  coreRunnerPrefab: {fileID: 1745681195676021496, guid: 29ca44a997a289540aa1dc0c901827b3,
     type: 3}
 --- !u!4 &1470997072
 Transform:

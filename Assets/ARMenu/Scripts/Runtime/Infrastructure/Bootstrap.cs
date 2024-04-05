@@ -7,28 +7,25 @@ using UnityEngine.XR.ARFoundation;
 
 namespace ARMenu.Scripts.Runtime.Infrastructure
 {
-	[DefaultExecutionOrder(-1000)]
 	public class Bootstrap : MonoBehaviour
 	{
 		public ARTrackedImageManager trackedImageManagerPrefab;
 		public ARSession arSessionPrefab;
+		public CoreRunner coreRunnerPrefab;
 
 		private IDishTrackerAR _dishTracker;
 		private IAssetProvider _assetProvider;
 
 		private void Awake()
 		{
+			Initialize();
+		}
+
+		private async void Initialize()
+		{
 			InitializeServices();
-		}
-
-		private void Start()
-		{
-			StartDishTrackerAsync(AssetKeys.BurgersLibraryKey);
-		}
-
-		private void OnDestroy()
-		{
-			_dishTracker.CleanUp();
+			await InitializeAssets();
+			InitializeCore();
 		}
 
 		private void InitializeServices()
@@ -41,11 +38,16 @@ namespace ARMenu.Scripts.Runtime.Infrastructure
 			_dishTracker = new DishTrackerAR(_assetProvider, imageManager);
 		}
 
-		private async void StartDishTrackerAsync(string libraryAssetKey)
+		private async Awaitable InitializeAssets()
 		{
-			DishImageLibrary imageLibrary = await _assetProvider.LoadAssetAsync<DishImageLibrary>(libraryAssetKey);
+			DishImageLibrary imageLibrary = await _assetProvider.LoadAssetAsync<DishImageLibrary>(AssetKeys.BurgersLibraryKey);
 			_dishTracker.SetImageLibrary(imageLibrary);
-			_dishTracker.Start();
+		}
+
+		private void InitializeCore()
+		{
+			CoreRunner coreRunner = Instantiate(coreRunnerPrefab);
+			coreRunner.Construct(_dishTracker);
 		}
 	}
 }

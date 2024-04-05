@@ -1,13 +1,5 @@
 {
-  "scopedRegistries": [
-    {
-      "name": "Vuforia",
-      "url": "https://registry.packages.developer.vuforia.com/",
-      "scopes": [
-        "com.ptc.vuforia"
-      ]
-    }
-  ],
+  "scopedRegistries": [],
   "dependencies": {
     "com.unity.addressables": "2.0.8",
     "com.unity.collab-proxy": "2.3.1",
