@@ -13,8 +13,6 @@ MonoBehaviour:
   m_Name: Burgers
   m_EditorClassIdentifier: 
   m_GroupName: Burgers
-  m_Data:
-    m_SerializedData: []
   m_GUID: dfdc9fab0920b324bbc245f1cda4ef57
   m_SerializeEntries:
   - m_GUID: c91309361c15a1945b58bbc24a58ddc8
