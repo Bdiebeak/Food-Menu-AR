@@ -1,7 +1,7 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
     <ui:ScrollView scroll-deceleration-rate="0,135" elasticity="0,1" horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="Auto">
         <uie:ObjectField label="Bake Camera" type="UnityEngine.Camera, UnityEngine.CoreModule" name="CameraField" style="min-height: 25px; -unity-text-align: middle-left;" />
-        <ui:Vector2IntField label="Resolution" x="1024" y="1024" name="ResolutionField" style="-unity-text-align: middle-left; min-height: 25px;" />
+        <ui:Vector2IntField label="Resolution" name="ResolutionField" value="1024,1024" style="-unity-text-align: middle-left; min-height: 25px;" />
         <uie:ObjectField label="Root Object" type="UnityEngine.Transform, UnityEngine.CoreModule" name="RootObjectField" style="min-height: 25px; -unity-text-align: middle-left;" />
         <ui:ListView header-title="Additional Objects" show-add-remove-footer="true" fixed-item-height="25" item-height="25" virtualization-method="DynamicHeight" show-foldout-header="true" show-bound-collection-size="true" name="AdditionalObjectsListView" show-border="true" reorder-mode="Animated" reorderable="true" horizontal-scrolling="false" selection-type="Multiple" class="the-uxml-listview" style="min-height: 25px;" />
         <uie:ToolbarSpacer name="ToolbarSpacer" style="height: 25px; width: 0;" />
