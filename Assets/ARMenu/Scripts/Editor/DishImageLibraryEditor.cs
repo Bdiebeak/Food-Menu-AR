@@ -9,7 +9,7 @@ namespace ARMenu.Scripts.Editor
 {
     /// <summary>
     /// This is a modified copy of <see cref="XRReferenceImageLibraryEditor"/>.
-    /// All modified code is marked as MODIFIED.
+    /// All modified code is marked as MODIFIED for easier comparison with the original.
     /// </summary>
 	[CustomEditor(typeof(DishImageLibrary))]
     class DishImageLibraryEditor : UnityEditor.Editor
@@ -26,8 +26,7 @@ namespace ARMenu.Scripts.Editor
                 s_AddImageControlId = GUIUtility.GetControlID(s_AddButtonContent, FocusType.Keyboard);
 
                 s_RemoveButtonContent = new GUIContent(
-                    string.Empty,
-                    EditorGUIUtility.FindTexture("d_winbtn_win_close"),
+                    "X",
                     "Remove this image from the database");
             }
 
@@ -337,7 +336,7 @@ namespace ARMenu.Scripts.Editor
 
         static Dish DishField(Dish dish)
         {
-            return (Dish)EditorGUILayout.ObjectField(dish, typeof(Dish));
+            return (Dish)EditorGUILayout.ObjectField(dish, typeof(Dish), false);
         }
     }
 }

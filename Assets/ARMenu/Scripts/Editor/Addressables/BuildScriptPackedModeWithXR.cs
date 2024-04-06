@@ -3,7 +3,7 @@ using UnityEditor.AddressableAssets.Build.DataBuilders;
 using UnityEditor.XR.ARSubsystems;
 using UnityEngine;
 
-namespace ARMenu.Scripts.Editor
+namespace ARMenu.Scripts.Editor.Addressables
 {
 	[CreateAssetMenu(fileName = "BuildScriptPackedModeWithXR.asset", menuName = "Addressables/Content Builders/XR Build Script")]
 	public class BuildScriptPackedModeWithXR : BuildScriptPackedMode

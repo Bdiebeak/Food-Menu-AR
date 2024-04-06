@@ -19,6 +19,9 @@
 # Recordings can get excessive in size
 /[Rr]ecordings/
 
+# UI Toolkit Schemas
+UIElementsSchema/
+
 # Uncomment this line if you wish to ignore the asset store tools plugin
 # /[Aa]ssets/AssetStoreTools*
 
