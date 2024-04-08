@@ -1,0 +1,11 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:Template name="DishContent" src="project://database/Assets/DishContent.uxml?fileID=9197481963319205126&amp;guid=de01e165b0f8bfc469792947ec2e27fa&amp;type=3#DishContent" />
+    <ui:ScrollView horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="AlwaysVisible" horizontal-page-size="0" vertical-page-size="0" style="flex-grow: 1;">
+        <ui:Instance template="DishContent" name="DishContent" />
+        <ui:VisualElement name="VisualElement" style="flex-grow: 1; height: 50%;">
+            <ui:Instance template="DishContent" name="IngredientContent" />
+            <ui:Button text="Button" name="RightButton" style="height: 82px;" />
+            <ui:Button text="Button" name="LeftButton" />
+        </ui:VisualElement>
+    </ui:ScrollView>
+</ui:UXML>
