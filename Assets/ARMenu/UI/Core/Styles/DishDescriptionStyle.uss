@@ -5,7 +5,7 @@
 
 .header {
     background-color: rgba(0, 0, 0, 0.49);
-    font-size: 72px;
+    font-size: 100px;
     color: rgb(255, 255, 255);
     -unity-text-align: middle-center;
 }
@@ -14,14 +14,35 @@
     font-size: 48px;
     color: rgb(255, 255, 255);
     white-space: normal;
+    margin-right: 15px;
+    margin-left: 15px;
 }
 
-.minimize-button {
+.collapse-button {
     background-color: rgba(255, 255, 255, 0.18);
-    font-size: 95px;
-    -unity-font-style: bold;
+    font-size: 50px;
+    -unity-font-style: normal;
     -unity-text-align: middle-center;
     color: rgb(255, 255, 255);
+}
+
+.unity-label {
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
 }
 
 .swap-element-button {
@@ -69,21 +90,48 @@
     transition-timing-function: ease-in-out;
 }
 
-.unity-label {
-    margin-top: 0;
-    margin-right: 15px;
-    margin-bottom: 0;
-    margin-left: 15px;
-    padding-top: 0;
-    padding-right: 0;
-    padding-bottom: 0;
-    padding-left: 0;
+.unity-button:active {
     border-top-width: 0;
     border-right-width: 0;
     border-bottom-width: 0;
     border-left-width: 0;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-    border-bottom-left-radius: 0;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    scale: 1.05 1.05;
+    transition-property: all;
+    transition-duration: 0.15s;
+    transition-timing-function: ease-in-out;
+    color: rgb(140, 140, 140);
+}
+
+.screen-maximized {
+    transform-origin: top;
+    background-color: rgba(0, 0, 0, 0.78);
+    width: 100%;
+    height: 100%;
+    translate: 0 0;
+    transition-property: translate;
+    transition-duration: 1s;
+    transition-timing-function: ease-in-out;
+}
+
+.scroll-view:disabled {
+    opacity: 1;
+}
+
+.screen-minimized {
+    transform-origin: top;
+    background-color: rgba(0, 0, 0, 0.78);
+    width: 100%;
+    height: 100%;
+    translate: 0 90.25%;
+    transition-property: translate;
+    transition-duration: 1s;
+    transition-timing-function: ease-in-out;
 }
