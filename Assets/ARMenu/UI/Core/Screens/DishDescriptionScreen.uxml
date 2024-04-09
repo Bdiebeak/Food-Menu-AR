@@ -1,0 +1,17 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:Template name="DishContent" src="project://database/Assets/ARMenu/UI/Core/Elements/DishContent.uxml?fileID=9197481963319205126&amp;guid=de01e165b0f8bfc469792947ec2e27fa&amp;type=3#DishContent" />
+    <Style src="project://database/Assets/ARMenu/UI/Core/Styles/DishDescriptionStyle.uss?fileID=7433441132597879392&amp;guid=3f1c2b82ca61dda42a2556311c172ef4&amp;type=3#DishDescriptionStyle" />
+    <ui:ScrollView horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="Hidden" horizontal-page-size="0" vertical-page-size="0" style="transform-origin: top; background-color: rgba(0, 0, 0, 0.78); flex-direction: column; flex-grow: 1;">
+        <ui:VisualElement name="DishContainer">
+            <ui:Instance template="DishContent" name="DishContent" style="height: 960px; flex-grow: 1;" />
+            <ui:Button text="-" name="MinimizeButton" class="minimize-button" style="position: absolute; height: 88px; width: 88px; top: 0; left: auto; right: 0; bottom: auto; margin-right: 15px;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="IngredientsContainer" style="height: 960px; flex-direction: row; flex-grow: 1;">
+            <ui:Button text="&lt;" name="PreviousButton" class="swap-element-button" style="transform-origin: left;" />
+            <ui:VisualElement name="IngredientContentContainer" style="flex-grow: 1;">
+                <ui:Instance template="DishContent" name="IngredientContent" style="flex-grow: 1;" />
+            </ui:VisualElement>
+            <ui:Button text="&gt;" name="NextButton" class="swap-element-button" style="transform-origin: right;" />
+        </ui:VisualElement>
+    </ui:ScrollView>
+</ui:UXML>

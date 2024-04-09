@@ -1,0 +1,89 @@
+.preview-image {
+    -unity-background-scale-mode: scale-and-crop;
+    height: 50%;
+}
+
+.header {
+    background-color: rgba(0, 0, 0, 0.49);
+    font-size: 72px;
+    color: rgb(255, 255, 255);
+    -unity-text-align: middle-center;
+}
+
+.description {
+    font-size: 48px;
+    color: rgb(255, 255, 255);
+    white-space: normal;
+}
+
+.minimize-button {
+    background-color: rgba(255, 255, 255, 0.18);
+    font-size: 95px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+    color: rgb(255, 255, 255);
+}
+
+.swap-element-button {
+    flex-grow: 1;
+    flex-shrink: 0;
+    min-width: 5%;
+    -unity-font-style: bold;
+    font-size: 32px;
+    color: rgb(255, 255, 255);
+    -unity-text-align: middle-center;
+    background-color: rgba(0, 0, 0, 0.49);
+}
+
+.unity-button {
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+}
+
+.unity-button:hover {
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    scale: 1.05 1.05;
+    transition-property: scale;
+    transition-duration: 0.15s;
+    transition-timing-function: ease-in-out;
+}
+
+.unity-label {
+    margin-top: 0;
+    margin-right: 15px;
+    margin-bottom: 0;
+    margin-left: 15px;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
