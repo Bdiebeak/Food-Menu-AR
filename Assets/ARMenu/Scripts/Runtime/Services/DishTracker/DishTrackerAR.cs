@@ -1,14 +1,18 @@
+using System;
 using System.Collections.Generic;
 using ARMenu.Scripts.Runtime.Data;
 using ARMenu.Scripts.Runtime.Services.AssetProvider;
 using UnityEngine;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
+using Object = UnityEngine.Object;
 
 namespace ARMenu.Scripts.Runtime.Services.DishTracker
 {
 	public class DishTrackerAR : IDishTrackerAR
 	{
+		public event Action<Dish> TrackingDishChanged;
+
 		private readonly IAssetProvider _assetProvider;
 		private readonly ARTrackedImageManager _trackedImageManager;
 
