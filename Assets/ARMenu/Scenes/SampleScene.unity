@@ -312,7 +312,7 @@ MonoBehaviour:
     type: 3}
   coreRunnerPrefab: {fileID: 1745681195676021496, guid: 29ca44a997a289540aa1dc0c901827b3,
     type: 3}
-  documentPrefab: {fileID: 6698757842727233615, guid: db7e234bcbcbbdd459b3371f2496cdec,
+  coreUIPrefab: {fileID: 6698757842727233615, guid: db7e234bcbcbbdd459b3371f2496cdec,
     type: 3}
 --- !u!4 &1470997072
 Transform:

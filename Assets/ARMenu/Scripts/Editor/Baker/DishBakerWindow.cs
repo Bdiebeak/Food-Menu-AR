@@ -9,19 +9,10 @@ namespace ARMenu.Scripts.Editor.Baker
 {
 	public class DishBakerWindow : EditorWindow
 	{
-		private const string ResolutionField = "ResolutionField";
-		private const string CameraField = "CameraField";
-		private const string RootObjectField = "RootObjectField";
-		private const string AdditionalObjectsListView = "AdditionalObjectsListView";
-		private const string FolderPathField = "FolderPathTextField";
-		private const string SelectPathButton = "SelectPathButton";
-		private const string BakeButton = "BakeButton";
-		private const string AdditionalObjectField = "ObjectField";
-
 		public VisualTreeAsset ui;
 		public VisualTreeAsset additionalElement;
 
-		private DishBaker _dishBaker = new();
+		private readonly DishBaker _dishBaker = new();
 
 		[MenuItem("Services/DishBaker")]
 		public static void ShowWindow()
@@ -36,13 +27,13 @@ namespace ARMenu.Scripts.Editor.Baker
 			ui.CloneTree(root);
 
 			InitializeDefaultValues();
-			InitializeResolutionField(root.Q<Vector2IntField>(ResolutionField));
-			InitializeCameraField(root.Q<ObjectField>(CameraField));
-			InitializeRootObjectField(root.Q<ObjectField>(RootObjectField));
-			InitializeListViewForAdditionalObjects(root.Q<ListView>(AdditionalObjectsListView));
-			InitializePathTextField(root.Q<TextField>(FolderPathField));
-			InitializeSelectPathButton(root.Q<Button>(SelectPathButton));
-			InitializeBakeButton(root.Q<Button>(BakeButton));
+			InitializeResolutionField(root.Q<Vector2IntField>("ResolutionField"));
+			InitializeCameraField(root.Q<ObjectField>("CameraField"));
+			InitializeRootObjectField(root.Q<ObjectField>("RootObjectField"));
+			InitializeListViewForAdditionalObjects(root.Q<ListView>("AdditionalObjectsListView"));
+			InitializePathTextField(root.Q<TextField>("FolderPathTextField"));
+			InitializeSelectPathButton(root.Q<Button>("SelectPathButton"));
+			InitializeBakeButton(root.Q<Button>("BakeButton"));
 		}
 
 		private void InitializeDefaultValues()
@@ -105,7 +96,7 @@ namespace ARMenu.Scripts.Editor.Baker
 			listView.itemsSource = _dishBaker.additionalObjects;
 			listView.bindItem = (element, i) =>
 			{
-				ObjectField objectField = element.Q<ObjectField>(AdditionalObjectField);
+				ObjectField objectField = element.Q<ObjectField>("ObjectField");
 				objectField.objectType = typeof(Transform);
 				objectField.value = _dishBaker.additionalObjects[i];
 				objectField.RegisterValueChangedCallback(value =>

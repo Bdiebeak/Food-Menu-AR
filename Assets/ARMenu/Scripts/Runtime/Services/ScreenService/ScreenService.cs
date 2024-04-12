@@ -6,20 +6,20 @@ namespace ARMenu.Scripts.Runtime.Services.ScreenService
 {
 	public class ScreenService : IScreenService
 	{
-		private Dictionary<Type, IScreen> _screens;
+		private readonly Dictionary<Type, IScreen> _screens = new();
 
-		public void RegisterScreen<T>(T screen) where T : IScreen
+		public void RegisterScreen<TScreen>(TScreen screen) where TScreen : IScreen
 		{
-			_screens.Add(typeof(T), screen);
+			_screens.Add(typeof(TScreen), screen);
 		}
 
-		public T GetScreen<T>() where T : IScreen
+		public TScreen GetScreen<TScreen>() where TScreen : IScreen
 		{
-			if (_screens.TryGetValue(typeof(T), out IScreen screen) == false)
+			if (_screens.TryGetValue(typeof(TScreen), out IScreen screen) == false)
 			{
-				Debug.LogError($"Can't find registered screen for type {typeof(T).FullName}.");
+				Debug.LogError($"Can't find registered screen for type {typeof(TScreen).FullName}.");
 			}
-			return (T)screen;
+			return (TScreen)screen;
 		}
 
 		public void HideAll()

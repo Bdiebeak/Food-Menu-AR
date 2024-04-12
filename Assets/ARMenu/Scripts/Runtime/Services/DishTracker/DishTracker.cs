@@ -9,37 +9,35 @@ using Object = UnityEngine.Object;
 
 namespace ARMenu.Scripts.Runtime.Services.DishTracker
 {
-	public class DishTrackerAR : IDishTrackerAR
+	public class DishTracker : IDishTracker
 	{
-		public event Action<Dish> TrackingDishChanged;
+		public event Action<Dish> TrackingChanged;
+		public event Action TrackingLost;
 
 		private readonly IAssetProvider _assetProvider;
 		private readonly ARTrackedImageManager _trackedImageManager;
+		private readonly Dictionary<string, GameObject> _trackingDishes = new();
+		private readonly CurrentTrackedData _currentTrackedData = new();
 
-		private DishImageLibrary _imageLibrary;
-		private Dictionary<string, GameObject> _trackingDishes = new();
+		private IImageLibrary<Dish> _imageLibrary;
 
-		public DishTrackerAR(IAssetProvider assetProvider,
-							 ARTrackedImageManager trackedImageManager)
+		public DishTracker(IAssetProvider assetProvider,
+						   ARTrackedImageManager trackedImageManager)
 		{
 			_assetProvider = assetProvider;
 			_trackedImageManager = trackedImageManager;
 		}
 
-		public void SetImageLibrary(DishImageLibrary initialLibrary)
+		public void Initialize(IImageLibrary<Dish> dishImageLibrary)
 		{
 			if (_imageLibrary != null)
 			{
-				Debug.LogError("Reinitialization of ImageLibrary in runtime is not supported. It was already initialized.");
+				Debug.LogError("Initialization was already completed. Reinitialization is not supported.");
 				return;
 			}
 
-			_imageLibrary = initialLibrary;
-			_trackedImageManager.referenceLibrary = initialLibrary;
-		}
-
-		public void Start()
-		{
+			_imageLibrary = dishImageLibrary;
+			_trackedImageManager.referenceLibrary = dishImageLibrary.GetReferenceImageLibrary();
 			_trackedImageManager.trackablesChanged.AddListener(OnTrackedImageChanged);
 			_trackedImageManager.enabled = true;
 		}
@@ -70,14 +68,12 @@ namespace ARMenu.Scripts.Runtime.Services.DishTracker
 				if (addedImage.referenceImage.texture == null)
 				{
 					Debug.LogError($"Can't find texture in reference image {addedImage.name}.");
-					return;
+					continue;
 				}
 
-				string imageName = addedImage.referenceImage.texture.name;
-				if (_imageLibrary.TryGetLinkedDish(imageName, out Dish linkedDish) == false)
+				if (TryGetLinkedDishData(addedImage, out Dish linkedDish) == false)
 				{
-					Debug.LogError($"Can't find linked dish for {imageName} image.");
-					return;
+					continue;
 				}
 
 				// Spawn prefab when its tracked image was added.
@@ -92,13 +88,48 @@ namespace ARMenu.Scripts.Runtime.Services.DishTracker
 		/// <param name="updatedImages"> Images which were updated this frame. </param>
 		private void HandleUpdatedImages(IReadOnlyCollection<ARTrackedImage> updatedImages)
 		{
-			foreach (ARTrackedImage updatedImage in updatedImages)
+			ARTrackedImage currentTrackedImage = _currentTrackedData.TrackedImage;
+			if (currentTrackedImage != null)
 			{
-				if (_trackingDishes.TryGetValue(updatedImage.name, out GameObject dish) == false)
+				// Don't handle other tracked images if we already have right one.
+				if (currentTrackedImage.trackingState == TrackingState.Tracking)
 				{
 					return;
 				}
-				dish.SetActive(updatedImage.trackingState == TrackingState.Tracking);
+
+				// Clean current tracked data if current image doesn't have Tracking state.
+				_currentTrackedData.TrackedObject.SetActive(false);
+				_currentTrackedData.Clean();
+
+				// If new Tracked image wasn't found.
+				TrackingLost?.Invoke();
+			}
+
+			foreach (ARTrackedImage updatedImage in updatedImages)
+			{
+				// Find tracked image with Tracking state.
+				if (updatedImage.trackingState != TrackingState.Tracking)
+				{
+					continue;
+				}
+				// Find tracked image with prepared Dish game object.
+				if (_trackingDishes.TryGetValue(updatedImage.name, out GameObject dish) == false)
+				{
+					continue;
+				}
+				// Find tracked image with linked Dish data.
+				if (TryGetLinkedDishData(updatedImage, out Dish dishData) == false)
+				{
+					continue;
+				}
+
+				// Reinitialize current tracked values.
+				_currentTrackedData.Set(updatedImage, dish);
+				dish.SetActive(true);
+				TrackingChanged?.Invoke(dishData);
+
+				// Stop function, because we have found required image.
+				return;
 			}
 		}
 
@@ -113,7 +144,7 @@ namespace ARMenu.Scripts.Runtime.Services.DishTracker
 			{
 				if (_trackingDishes.TryGetValue(removedImage.name, out GameObject dish) == false)
 				{
-					return;
+					continue;
 				}
 
 				_trackingDishes.Remove(removedImage.name);
@@ -121,11 +152,24 @@ namespace ARMenu.Scripts.Runtime.Services.DishTracker
 			}
 		}
 
+		private bool TryGetLinkedDishData(ARTrackedImage addedImage, out Dish linkedDish)
+		{
+			string imageName = addedImage.referenceImage.texture.name;
+			if (_imageLibrary.TryGetLinkedDish(imageName, out linkedDish))
+			{
+				return true;
+			}
+
+			Debug.LogError($"Can't find linked dish for {imageName} image.");
+			return false;
+		}
+
 		// TODO: fix problem when instantiate is called after removed.
 		private async void AddDishPrefabAsync(ARTrackedImage addedImage, Dish linkedDish)
 		{
 			GameObject dishPrefab = await _assetProvider.LoadAssetAsync<GameObject>(linkedDish.prefabPath);
 			GameObject dish = Object.Instantiate(dishPrefab, addedImage.transform);
+			dish.SetActive(false); // Deactivate object, because it visible state is set inside HandleUpdatedImages method.
 			_trackingDishes[addedImage.name] = dish;
 		}
 

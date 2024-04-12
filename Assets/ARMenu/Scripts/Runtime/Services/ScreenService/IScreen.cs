@@ -4,5 +4,6 @@
 	{
 		public void Show();
 		public void Hide();
+        public void Close();
 	}
 }

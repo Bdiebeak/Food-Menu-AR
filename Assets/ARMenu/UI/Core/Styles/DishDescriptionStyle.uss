@@ -46,14 +46,14 @@
 }
 
 .swap-element-button {
-    flex-grow: 1;
+    flex-grow: 0;
     flex-shrink: 0;
-    min-width: 5%;
     -unity-font-style: bold;
     font-size: 32px;
     color: rgb(255, 255, 255);
     -unity-text-align: middle-center;
     background-color: rgba(0, 0, 0, 0.49);
+    width: 5%;
 }
 
 .unity-button {

@@ -2,8 +2,8 @@
 {
 	public interface IScreenService
 	{
-		public void RegisterScreen<T>(T screen) where T : IScreen;
-		public T GetScreen<T>() where T : IScreen;
+		public void RegisterScreen<TScreen>(TScreen screen) where TScreen : IScreen;
+		public TScreen GetScreen<TScreen>() where TScreen : IScreen;
 		public void HideAll();
 	}
 }

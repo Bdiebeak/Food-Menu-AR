@@ -1,7 +1,8 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
     <ui:Template name="DishContent" src="project://database/Assets/ARMenu/UI/Core/Elements/DishContent.uxml?fileID=9197481963319205126&amp;guid=de01e165b0f8bfc469792947ec2e27fa&amp;type=3#DishContent" />
     <Style src="project://database/Assets/ARMenu/UI/Core/Styles/DishDescriptionStyle.uss?fileID=7433441132597879392&amp;guid=3f1c2b82ca61dda42a2556311c172ef4&amp;type=3#DishDescriptionStyle" />
-    <ui:VisualElement name="RootVisualElement" class="screen-maximized screen-minimized">
+    <Style src="project://database/Assets/ARMenu/UI/Core/Styles/GeneralStyle.uss?fileID=7433441132597879392&amp;guid=a7ef1eda0683df1449405c95b2ddf347&amp;type=3#GeneralStyle" />
+    <ui:VisualElement name="ScreenContainer" class="screen-maximized screen-minimized">
         <ui:Button text="PRESS ME" name="CollapseButton" class="collapse-button" />
         <ui:ScrollView horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="Hidden" horizontal-page-size="0" vertical-page-size="0" name="ScrollView" class="scroll-view">
             <ui:VisualElement name="DishContainer">

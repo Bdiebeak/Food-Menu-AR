@@ -1,40 +1,73 @@
-using ARMenu.Scripts.Runtime.Services.ScreenService;
+using ARMenu.Scripts.Runtime.Data;
+using ARMenu.Scripts.Runtime.UI.General;
+using Unity.Properties;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace ARMenu.Scripts.Runtime.UI.DishDescription
 {
 	// TODO: MV*-паттерн для работы с экраном
-	// Вдруг я захочу сменить UI Toolkit на UGUI интерфейс. В этом вьшном классе не должно быть бизнес-логики.
-	public class DishDescriptionScreen : IScreen
+	// Вдруг я захочу сменить UI Toolkit на UGUI интерфейс. В этом вьюшном классе не должно быть бизнес-логики.
+	public class DishDescriptionScreen : UxmlBaseScreen
 	{
 		private readonly DishDescriptionElements _elements;
-		private bool _isCollapsed;
+
+		// This is business logic
+		private bool _isCollapsed = true;
+		private Dish _dish;
+		private int _ingredientIndex;
 
 		public DishDescriptionScreen(UIDocument document)
 		{
 			_elements = new DishDescriptionElements(document);
 			_elements.Initialize();
+			BindData();
 		}
 
-		public void Show()
+		protected override VisualElement GetScreenRoot()
 		{
-			RegisterCallbacks();
+			return _elements.ScreenRoot;
 		}
 
-		public void Hide()
+		// TODO: remove temp function
+		public void SetDish(Dish newDish)
 		{
-			UnregisterCallbacks();
+			_dish = newDish;
+			_ingredientIndex = 0;
+			RefillDescription();
 		}
 
-		private void RegisterCallbacks()
+		private void RefillDescription()
+		{
+			_elements.DishName.text = _dish.title;
+			_elements.DishDescription.text = _dish.description;
+			_elements.DishImage.style.backgroundImage = new StyleBackground(Texture2D.whiteTexture);
+
+			_elements.IngredientName.text = _dish.ingredients[_ingredientIndex].title;
+			_elements.IngredientDescription.text = _dish.ingredients[_ingredientIndex].description;
+			_elements.IngredientImage.style.backgroundImage = new StyleBackground(Texture2D.whiteTexture);
+		}
+
+		private void BindData()
+		{
+			// TODO: fix, doesn't work.
+			_elements.DishName.SetBinding(nameof(Label.text), new DataBinding()
+			{
+				bindingMode = BindingMode.ToTarget,
+				dataSource = _dish,
+				dataSourcePath = new PropertyPath(nameof(Dish.title)),
+				dataSourceType = typeof(string)
+			});
+		}
+
+		protected override void SubscribeEvents()
 		{
 			_elements.CollapseButton.RegisterCallback<ClickEvent>(OnCollapseButtonClicked);
 			_elements.PreviousButton.RegisterCallback<ClickEvent>(OnPreviousButtonClicked);
 			_elements.NextButton.RegisterCallback<ClickEvent>(OnNextButtonClicked);
 		}
 
-		private void UnregisterCallbacks()
+		protected override void UnsubscribeEvents()
 		{
 			_elements.CollapseButton.UnregisterCallback<ClickEvent>(OnCollapseButtonClicked);
 			_elements.PreviousButton.UnregisterCallback<ClickEvent>(OnPreviousButtonClicked);
@@ -48,12 +81,22 @@ namespace ARMenu.Scripts.Runtime.UI.DishDescription
 
 		private void OnPreviousButtonClicked(ClickEvent evt)
 		{
-			Debug.Log("Previous");
+			_ingredientIndex--;
+			if (_ingredientIndex < 0)
+			{
+				_ingredientIndex = _dish.ingredients.Count - 1;
+			}
+			RefillDescription();
 		}
 
 		private void OnNextButtonClicked(ClickEvent evt)
 		{
-			Debug.Log("Next");
+			_ingredientIndex++;
+			if (_ingredientIndex >= _dish.ingredients.Count)
+			{
+				_ingredientIndex = 0;
+			}
+			RefillDescription();
 		}
 
 		private void SetCollapsedState(bool state)
@@ -61,13 +104,14 @@ namespace ARMenu.Scripts.Runtime.UI.DishDescription
 			_isCollapsed = state;
 			if (state)
 			{
-				_elements.RootContainer.AddToClassList(DishDescriptionStyles.ScreenMinimized);
+				_elements.ScreenRoot.AddToClassList(DishDescriptionStyles.ScreenMinimized);
 			}
 			else
 			{
-				_elements.RootContainer.RemoveFromClassList(DishDescriptionStyles.ScreenMinimized);
+				_elements.ScreenRoot.RemoveFromClassList(DishDescriptionStyles.ScreenMinimized);
 			}
-			_elements.RootContainer.SetEnabled(!state);
+			_elements.ScrollView.SetEnabled(!state);
+			_elements.ScrollView.ScrollTo(_elements.ScrollView.ElementAt(0));
 		}
 	}
 }

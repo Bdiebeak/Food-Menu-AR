@@ -6,7 +6,7 @@ using UnityEngine.XR.ARSubsystems;
 namespace ARMenu.Scripts.Runtime.Data
 {
 	[CreateAssetMenu(fileName = nameof(DishImageLibrary), menuName = "ScriptableObjects/" + nameof(DishImageLibrary))]
-	public class DishImageLibrary : XRReferenceImageLibrary
+	public class DishImageLibrary : XRReferenceImageLibrary, IImageLibrary<Dish>
 	{
 		// Dictionary can be used here, but I don't want to deal with its serialization and custom editor now.
 		public List<ReferenceImageToDishNode> imageToDishNodes = new();
@@ -16,6 +16,11 @@ namespace ARMenu.Scripts.Runtime.Data
 			ReferenceImageToDishNode node = imageToDishNodes.FirstOrDefault(x => x.arImage.name.Equals(imageName));
 			dish = node?.dish;
 			return node != null;
+		}
+
+		public IReferenceImageLibrary GetReferenceImageLibrary()
+		{
+			return this;
 		}
 	}
 }
