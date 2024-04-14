@@ -1,4 +1,5 @@
-﻿using UnityEngine.UIElements;
+﻿using ARMenu.Scripts.Runtime.UI.Elements;
+using UnityEngine.UIElements;
 
 namespace ARMenu.Scripts.Runtime.UI.DishDescription
 {
@@ -7,17 +8,10 @@ namespace ARMenu.Scripts.Runtime.UI.DishDescription
 		public VisualElement ScreenRoot { get; private set; }
 		public ScrollView ScrollView { get; private set; }
 		public Button CollapseButton { get; private set; }
-
-		// TODO: create FoodDescriptionElement in UXML with custom controls.
-		public Label DishName { get; private set; }
-		public VisualElement DishImage { get; private set; }
-		public Label DishDescription { get; private set; }
-
 		public Button PreviousButton { get; private set; }
 		public Button NextButton { get; private set; }
-		public Label IngredientName { get; private set; }
-		public VisualElement IngredientImage { get; private set; }
-		public Label IngredientDescription { get; private set; }
+		public DishElement DishElement { get; private set; }
+		public DishElement IngredientElement { get; private set; }
 
 		private readonly UIDocument _uiDocument;
 
@@ -32,13 +26,13 @@ namespace ARMenu.Scripts.Runtime.UI.DishDescription
 			ScreenRoot = GetElement<VisualElement>("DishDescriptionScreen", "ScreenContainer");
 			ScrollView = GetElement<ScrollView>("DishDescriptionScreen", "ScrollView");
 			CollapseButton = GetElement<Button>("DishDescriptionScreen", "CollapseButton");
+			PreviousButton = GetElement<Button>("IngredientsContainer", "PreviousButton");
+			NextButton = GetElement<Button>("IngredientsContainer", "NextButton");
 
 			DishName = GetElement<Label>("DishContainer", "DishName");
 			DishImage = GetElement<VisualElement>("DishContainer", "DishImage");
 			DishDescription = GetElement<Label>("DishContainer", "DishDescription");
 
-			PreviousButton = GetElement<Button>("IngredientsContainer", "PreviousButton");
-			NextButton = GetElement<Button>("IngredientsContainer", "NextButton");
 			IngredientName = GetElement<Label>("IngredientsContainer", "DishName");
 			IngredientImage = GetElement<VisualElement>("IngredientsContainer", "DishImage");
 			IngredientDescription = GetElement<Label>("IngredientsContainer", "DishDescription");
@@ -50,6 +44,7 @@ namespace ARMenu.Scripts.Runtime.UI.DishDescription
 			{
 				return _uiDocument.rootVisualElement.Q<T>(key);
 			}
+
 			return _uiDocument.rootVisualElement.Q<VisualElement>(root).Q<T>(key);
 		}
 	}

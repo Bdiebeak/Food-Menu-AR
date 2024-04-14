@@ -3,7 +3,6 @@ using UnityEngine.UIElements;
 
 namespace ARMenu.Scripts.Runtime.UI.General
 {
-	// TODO: refactoring
 	public abstract class UxmlBaseScreen : IScreen
 	{
 		protected abstract VisualElement GetScreenRoot();

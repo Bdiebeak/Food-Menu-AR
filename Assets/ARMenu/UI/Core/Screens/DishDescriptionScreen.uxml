@@ -3,7 +3,7 @@
     <Style src="project://database/Assets/ARMenu/UI/Core/Styles/DishDescriptionStyle.uss?fileID=7433441132597879392&amp;guid=3f1c2b82ca61dda42a2556311c172ef4&amp;type=3#DishDescriptionStyle" />
     <Style src="project://database/Assets/ARMenu/UI/Core/Styles/GeneralStyle.uss?fileID=7433441132597879392&amp;guid=a7ef1eda0683df1449405c95b2ddf347&amp;type=3#GeneralStyle" />
     <ui:VisualElement name="ScreenContainer" class="screen-maximized screen-minimized">
-        <ui:Button text="PRESS ME" name="CollapseButton" class="collapse-button" />
+        <ui:Button text="PRESS ME" name="CollapseButton" class="collapse-button" style="flex-shrink: 1; flex-grow: 1; transform-origin: top;" />
         <ui:ScrollView horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="Hidden" horizontal-page-size="0" vertical-page-size="0" name="ScrollView" class="scroll-view">
             <ui:VisualElement name="DishContainer">
                 <ui:Instance template="DishContent" name="DishContent" style="height: 960px; flex-grow: 1;" />
