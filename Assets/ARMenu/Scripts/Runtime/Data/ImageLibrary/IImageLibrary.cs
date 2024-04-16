@@ -1,6 +1,6 @@
 ﻿using UnityEngine.XR.ARSubsystems;
 
-namespace ARMenu.Scripts.Runtime.Data
+namespace ARMenu.Scripts.Runtime.Data.ImageLibrary
 {
 	public interface IImageLibrary<TData> where TData : class
 	{

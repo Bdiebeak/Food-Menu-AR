@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -25,8 +26,9 @@ namespace ARMenu.Scripts.Runtime.Services.AssetProvider
 
 		private async Awaitable<T> LoadAndCache<T>(string assetKey) where T : class
 		{
-			AsyncOperationHandle<T> loadingOperation = Addressables.LoadAssetAsync<T>(assetKey);
+			await Task.Delay(2500); // TODO: remove it, testing only.
 
+			AsyncOperationHandle<T> loadingOperation = Addressables.LoadAssetAsync<T>(assetKey);
 			await loadingOperation.Task;
 			_completedOperations.Add(assetKey, loadingOperation);
 

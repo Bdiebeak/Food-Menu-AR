@@ -1,4 +1,4 @@
-﻿using ARMenu.Scripts.Runtime.Data;
+﻿using ARMenu.Scripts.Runtime.Data.ImageLibrary;
 using ARMenu.Scripts.Runtime.Infrastructure.Constants;
 using ARMenu.Scripts.Runtime.Services.AssetProvider;
 using ARMenu.Scripts.Runtime.Services.DishTracker;
@@ -11,9 +11,13 @@ using UnityEngine.XR.ARFoundation;
 
 namespace ARMenu.Scripts.Runtime.Infrastructure
 {
+	/// <summary>
+	/// Isn't the best bootstrap logic.
+	/// But this is enough for me and this example project, I don't want to complicate it.
+	/// There could be some additional factories e.g. UIFactory or CoreFactory.
+	/// </summary>
 	public class Bootstrap : MonoBehaviour
 	{
-		// TODO: CoreFactory?
 		public ARTrackedImageManager trackedImageManagerPrefab;
 		public ARSession arSessionPrefab;
 		public CoreRunner coreRunnerPrefab;
@@ -26,6 +30,9 @@ namespace ARMenu.Scripts.Runtime.Infrastructure
 		private IAssetProvider _assetProvider;
 		private IDishTracker _dishTracker;
 		private IScreenService _screenService;
+
+		private DishDescriptionViewModel _dishScreenModel;
+		private HintViewModel _hintScreenModel;
 
 		private void Awake()
 		{
@@ -58,8 +65,15 @@ namespace ARMenu.Scripts.Runtime.Infrastructure
 
 		private void InitializeScreens()
 		{
-			_screenService.RegisterScreen(new DishDescriptionScreen(_coreUI));
-			_screenService.RegisterScreen(new ScanHintScreen(_coreUI));
+			_dishScreenModel = new DishDescriptionViewModel();
+			_hintScreenModel = new HintViewModel();
+
+			_screenService.RegisterScreen(new DishDescriptionUxmlScreen(_coreUI, _dishScreenModel));
+			_screenService.RegisterScreen(new HintUxmlScreen(_coreUI, _hintScreenModel));
+
+			_screenService.HideAll();
+			_screenService.GetScreen<HintUxmlScreen>().Show();
+			_hintScreenModel.SetHint("Loading...");
 		}
 
 		private async Awaitable PreloadAssets()
@@ -70,7 +84,7 @@ namespace ARMenu.Scripts.Runtime.Infrastructure
 		private void InitializeCore()
 		{
 			CoreRunner coreRunner = Instantiate(coreRunnerPrefab);
-			coreRunner.Initialize(_assetProvider, _dishTracker, _screenService);
+			coreRunner.Initialize(_assetProvider, _dishTracker, _screenService, _dishScreenModel, _hintScreenModel);
 		}
 	}
 }

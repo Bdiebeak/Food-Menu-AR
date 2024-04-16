@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using ARMenu.Scripts.Runtime.Data;
+using ARMenu.Scripts.Runtime.Data.ImageLibrary;
 using ARMenu.Scripts.Runtime.Services.AssetProvider;
 using UnityEngine;
 using UnityEngine.XR.ARFoundation;

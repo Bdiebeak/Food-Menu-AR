@@ -1,4 +1,5 @@
 ﻿using ARMenu.Scripts.Runtime.Data;
+using ARMenu.Scripts.Runtime.Data.ImageLibrary;
 using ARMenu.Scripts.Runtime.Infrastructure.Constants;
 using ARMenu.Scripts.Runtime.Services.AssetProvider;
 using ARMenu.Scripts.Runtime.Services.DishTracker;
@@ -14,14 +15,19 @@ namespace ARMenu.Scripts.Runtime.Infrastructure
 		private IAssetProvider _assetProvider;
 		private IDishTracker _dishTracker;
 		private IScreenService _screenService;
+		private DishDescriptionViewModel _dishDescriptionModel;
+		private HintViewModel _hintScreenModel;
 
 		public void Initialize(IAssetProvider assetProvider,
 							   IDishTracker dishTracker,
-							   IScreenService screenService)
+							   IScreenService screenService,
+							   DishDescriptionViewModel dishDescriptionModel, HintViewModel hintScreenModel)
 		{
 			_assetProvider = assetProvider;
 			_dishTracker = dishTracker;
 			_screenService = screenService;
+			_dishDescriptionModel = dishDescriptionModel;
+			_hintScreenModel = hintScreenModel;
 		}
 
 		private async void Start()
@@ -30,8 +36,9 @@ namespace ARMenu.Scripts.Runtime.Infrastructure
 			_dishTracker.TrackingLost += OnTrackingLost;
 			DishImageLibrary imageLibrary = await _assetProvider.LoadAssetAsync<DishImageLibrary>(AssetKeys.BurgersLibraryKey);
 			_dishTracker.Initialize(imageLibrary);
+			_hintScreenModel.SetHint("Please, scan a QR code.");
 			_screenService.HideAll();
-			_screenService.GetScreen<ScanHintScreen>().Show();
+			_screenService.GetScreen<HintUxmlScreen>().Show();
 		}
 
 		private void OnDestroy()
@@ -44,18 +51,17 @@ namespace ARMenu.Scripts.Runtime.Infrastructure
 
 		private void OnTrackingChanged(Dish newDish)
 		{
-			// TODO: если нет отслеживаемого блюда, то показать экран "Scan QR code".
-			// TODO: если есть блюда, показывать экран с его информацией.
-			_screenService.GetScreen<ScanHintScreen>().Hide();
-			DishDescriptionScreen dishDescriptionScreen = _screenService.GetScreen<DishDescriptionScreen>();
-			dishDescriptionScreen.Show();
-			dishDescriptionScreen.SetDish(newDish);
+			_dishDescriptionModel.SetDish(newDish);
+			_screenService.GetScreen<HintUxmlScreen>().Hide();
+			DishDescriptionUxmlScreen dishDescriptionUxmlScreen = _screenService.GetScreen<DishDescriptionUxmlScreen>();
+			dishDescriptionUxmlScreen.Show();
 		}
 
 		private void OnTrackingLost()
 		{
-			_screenService.GetScreen<DishDescriptionScreen>().Hide();
-			_screenService.GetScreen<ScanHintScreen>().Show();
+			_screenService.GetScreen<DishDescriptionUxmlScreen>().Hide();
+			_hintScreenModel.SetHint("Please, scan a QR code.");
+			_screenService.GetScreen<HintUxmlScreen>().Show();
 		}
 	}
 }

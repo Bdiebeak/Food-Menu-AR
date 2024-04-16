@@ -3,7 +3,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.XR.ARSubsystems;
 
-namespace ARMenu.Scripts.Runtime.Data
+namespace ARMenu.Scripts.Runtime.Data.ImageLibrary
 {
 	[CreateAssetMenu(fileName = nameof(DishImageLibrary), menuName = "ScriptableObjects/" + nameof(DishImageLibrary))]
 	public class DishImageLibrary : XRReferenceImageLibrary, IImageLibrary<Dish>

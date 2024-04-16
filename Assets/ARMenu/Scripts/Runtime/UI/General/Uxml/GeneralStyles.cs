@@ -1,4 +1,4 @@
-﻿namespace ARMenu.Scripts.Runtime.UI.General
+﻿namespace ARMenu.Scripts.Runtime.UI.General.Uxml
 {
 	public static class GeneralStyles
 	{
