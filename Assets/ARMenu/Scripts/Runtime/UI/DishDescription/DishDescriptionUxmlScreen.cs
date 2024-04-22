@@ -54,6 +54,7 @@ namespace ARMenu.Scripts.Runtime.UI.DishDescription
 		protected override void SubscribeEvents()
 		{
 			viewModel.Changed += OnViewModelChanged;
+			viewModel.CollapseStateChanged += OnCollapseStateChanged;
 			_elements.CollapseButton.RegisterCallback<ClickEvent>(OnCollapseButtonClicked);
 			_elements.NextButton.RegisterCallback<ClickEvent>(OnNextButtonClicked);
 			_elements.PreviousButton.RegisterCallback<ClickEvent>(OnPreviousButtonClicked);
@@ -62,6 +63,7 @@ namespace ARMenu.Scripts.Runtime.UI.DishDescription
 		protected override void UnsubscribeEvents()
 		{
 			viewModel.Changed -= OnViewModelChanged;
+			viewModel.CollapseStateChanged -= OnCollapseStateChanged;
 			_elements.CollapseButton.UnregisterCallback<ClickEvent>(OnCollapseButtonClicked);
 			_elements.NextButton.UnregisterCallback<ClickEvent>(OnNextButtonClicked);
 			_elements.PreviousButton.UnregisterCallback<ClickEvent>(OnPreviousButtonClicked);
@@ -69,7 +71,6 @@ namespace ARMenu.Scripts.Runtime.UI.DishDescription
 
 		private void OnViewModelChanged()
 		{
-			OnCollapseStateChanged(viewModel.IsCollapsed);
 			SetDishImage(viewModel.DishImage);
 			SetIngredientImage(viewModel.IngredientImage);
 		}
@@ -86,7 +87,7 @@ namespace ARMenu.Scripts.Runtime.UI.DishDescription
 				_elements.ScrollView.SetEnabled(true);
 				_elements.ScreenContainer.RemoveFromClassList(DishDescriptionStyles.ScreenMinimized);
 			}
-			_elements.ScrollView.ScrollTo(_elements.ScrollView.ElementAt(0)); // TODO: always called.
+			_elements.ScrollView.ScrollTo(_elements.ScrollView.ElementAt(0));
 		}
 
 		private void SetDishImage(Texture2D image)

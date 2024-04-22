@@ -16,6 +16,7 @@ MonoBehaviour:
   description: Experience ultimate satisfaction with our Extraburger, featuring a
     succulent beef patty, crispy bacon, fried egg, and fresh toppings.
   weight: 450
+  cost: 2.5
   nutritionalInfo:
     calories: 1300
     carbohydrates: 65
@@ -30,5 +31,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e8ccc680b43f83e4f8c35df55e21b2c0, type: 2}
   - {fileID: 11400000, guid: 696f931dee8537f44b2d6d0ecd06ff73, type: 2}
   - {fileID: 11400000, guid: 7990ce40fee2c1c4ab8f2c36a2b91180, type: 2}
-  prefabPath: Extraburger/Prefabs/Extraburger.prefab
-  imagePath: Extraburger/Images/Extraburger.png
+  prefab: {fileID: 1424565209676324907, guid: 31d234fe70f2d5241ba28171b114683a, type: 3}
+  previewImage: {fileID: 2800000, guid: a8bb3655105e5504d830fbfa8dd1ec6b, type: 3}

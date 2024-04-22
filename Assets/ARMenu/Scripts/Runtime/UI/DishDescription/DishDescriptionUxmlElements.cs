@@ -1,5 +1,4 @@
-﻿using ARMenu.Scripts.Runtime.UI.Elements;
-using ARMenu.Scripts.Runtime.UI.General.Uxml;
+﻿using ARMenu.Scripts.Runtime.UI.General.Uxml;
 using UnityEngine.UIElements;
 
 namespace ARMenu.Scripts.Runtime.UI.DishDescription

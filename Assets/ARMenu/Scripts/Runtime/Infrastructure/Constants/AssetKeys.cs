@@ -2,6 +2,6 @@
 {
 	public static class AssetKeys
 	{
-		public const string BurgersLibraryKey = "General/BurgersLibrary.asset";
+		public const string BurgersLibraryKey = "General/BurgerJointImageLibrary.asset";
 	}
 }

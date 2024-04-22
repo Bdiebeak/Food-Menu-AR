@@ -9,8 +9,8 @@ namespace ARMenu.Scripts.Editor.Baker
 {
 	public class DishBakerWindow : EditorWindow
 	{
-		public VisualTreeAsset ui;
-		public VisualTreeAsset additionalElement;
+		public VisualTreeAsset windowUXML;
+		public VisualTreeAsset additionalElementUXML;
 
 		private readonly DishBaker _dishBaker = new();
 
@@ -24,7 +24,7 @@ namespace ARMenu.Scripts.Editor.Baker
 		public void CreateGUI()
 		{
 			VisualElement root = rootVisualElement;
-			ui.CloneTree(root);
+			windowUXML.CloneTree(root);
 
 			InitializeDefaultValues();
 			InitializeResolutionField(root.Q<Vector2IntField>("ResolutionField"));
@@ -92,7 +92,7 @@ namespace ARMenu.Scripts.Editor.Baker
 
 		private void InitializeListViewForAdditionalObjects(ListView listView)
 		{
-			listView.itemTemplate = additionalElement;
+			listView.itemTemplate = additionalElementUXML;
 			listView.itemsSource = _dishBaker.additionalObjects;
 			listView.bindItem = (element, i) =>
 			{

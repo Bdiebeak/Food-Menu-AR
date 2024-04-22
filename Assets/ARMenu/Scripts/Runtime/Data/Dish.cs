@@ -9,11 +9,11 @@ namespace ARMenu.Scripts.Runtime.Data
 		public string title;
 		public string description;
 		public float weight;
+		public float cost;
 		public NutritionalInfo nutritionalInfo;
 		public List<Ingredient> ingredients;
-		// TODO: auto bake paths
 		[Space]
-		public string prefabPath;
-		public string imagePath;
+		public GameObject prefab;
+		public Texture2D previewImage;
 	}
 }

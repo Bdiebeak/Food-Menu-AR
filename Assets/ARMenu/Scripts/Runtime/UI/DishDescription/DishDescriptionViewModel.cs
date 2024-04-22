@@ -1,4 +1,6 @@
-﻿using ARMenu.Scripts.Runtime.Data;
+﻿using System;
+using System.Text;
+using ARMenu.Scripts.Runtime.Data;
 using ARMenu.Scripts.Runtime.UI.General.Mvvm;
 using Unity.Properties;
 using UnityEngine;
@@ -21,7 +23,8 @@ namespace ARMenu.Scripts.Runtime.UI.DishDescription
 		// TODO: bind images.
 		public Texture2D DishImage { get; private set; }
 		public Texture2D IngredientImage { get; private set; }
-		public bool IsCollapsed { get; private set; }
+
+		public event Action<bool> CollapseStateChanged;
 
 		/// <summary>
 		/// Своего рода Model из MVVM.
@@ -29,15 +32,16 @@ namespace ARMenu.Scripts.Runtime.UI.DishDescription
 		/// </summary>
 		private Dish _dish;
 		private int _ingredientIndex;
+		private bool _isCollapsed;
 
 		public void SetDish(Dish newDish)
 		{
 			_dish = newDish;
 			_ingredientIndex = 0;
-			RefillIngredient();
-
 			DishName = newDish.title;
-			DishDescription = $"{newDish.description}\n{newDish.nutritionalInfo}";
+			DishImage = newDish.previewImage;
+			DishDescription = GenerateDescription();
+			RefillIngredient();
 			CallChangedEvent();
 		}
 
@@ -79,8 +83,8 @@ namespace ARMenu.Scripts.Runtime.UI.DishDescription
 
 		public void SwitchCollapsedState()
 		{
-			IsCollapsed = !IsCollapsed;
-			if (IsCollapsed)
+			_isCollapsed = !_isCollapsed;
+			if (_isCollapsed)
 			{
 				Collapse();
 			}
@@ -92,14 +96,23 @@ namespace ARMenu.Scripts.Runtime.UI.DishDescription
 
 		public void Expand()
 		{
-			IsCollapsed = false;
-			CallChangedEvent();
+			_isCollapsed = false;
+			CollapseStateChanged?.Invoke(false);
 		}
 
 		public void Collapse()
 		{
-			IsCollapsed = true;
-			CallChangedEvent();
+			_isCollapsed = true;
+			CollapseStateChanged?.Invoke(true);
+		}
+
+		private string GenerateDescription()
+		{
+			StringBuilder descriptionBuilder = new();
+			descriptionBuilder.AppendLine(_dish.description);
+			descriptionBuilder.AppendLine(_dish.nutritionalInfo.ToString());
+			descriptionBuilder.AppendLine($"Weight: {_dish.weight} | Cost: {_dish.cost}");
+			return descriptionBuilder.ToString();
 		}
 
 		private void RefillIngredient()
@@ -107,6 +120,7 @@ namespace ARMenu.Scripts.Runtime.UI.DishDescription
 			Ingredient currentIngredient = _dish.ingredients[_ingredientIndex];
 			IngredientName = currentIngredient.title;
 			IngredientDescription = currentIngredient.description;
+			IngredientImage = currentIngredient.previewImage;
 			CallChangedEvent();
 		}
 	}

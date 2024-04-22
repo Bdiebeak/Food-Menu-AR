@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using ARMenu.Scripts.Runtime.Data;
 using ARMenu.Scripts.Runtime.Data.ImageLibrary;
+using ARMenu.Scripts.Runtime.Data.ImageLibrary.Dishes;
 using ARMenu.Scripts.Runtime.Services.AssetProvider;
 using UnityEngine;
 using UnityEngine.XR.ARFoundation;
@@ -10,17 +11,23 @@ using Object = UnityEngine.Object;
 
 namespace ARMenu.Scripts.Runtime.Services.DishTracker
 {
+	public class TrackingData
+	{
+		public Dish cachedDish;
+		public GameObject spawnedPrefab;
+	}
+
 	public class DishTracker : IDishTracker
 	{
 		public event Action<Dish> TrackingChanged;
 		public event Action TrackingLost;
 
+		private readonly Dictionary<string, TrackingData> _trackingDishes = new();
+		private readonly CurrentTrackedData _currentTrackedData = new();
 		private readonly IAssetProvider _assetProvider;
 		private readonly ARTrackedImageManager _trackedImageManager;
-		private readonly Dictionary<string, GameObject> _trackingDishes = new();
-		private readonly CurrentTrackedData _currentTrackedData = new();
 
-		private IImageLibrary<Dish> _imageLibrary;
+		private DishImageLibrary _imageLibrary;
 
 		public DishTracker(IAssetProvider assetProvider,
 						   ARTrackedImageManager trackedImageManager)
@@ -29,7 +36,7 @@ namespace ARMenu.Scripts.Runtime.Services.DishTracker
 			_trackedImageManager = trackedImageManager;
 		}
 
-		public void Initialize(IImageLibrary<Dish> dishImageLibrary)
+		public void Initialize(DishImageLibrary dishImageLibrary)
 		{
 			if (_imageLibrary != null)
 			{
@@ -38,7 +45,7 @@ namespace ARMenu.Scripts.Runtime.Services.DishTracker
 			}
 
 			_imageLibrary = dishImageLibrary;
-			_trackedImageManager.referenceLibrary = dishImageLibrary.GetReferenceImageLibrary();
+			_trackedImageManager.referenceLibrary = dishImageLibrary.XRReferenceImageLibrary;
 			_trackedImageManager.trackablesChanged.AddListener(OnTrackedImageChanged);
 			_trackedImageManager.enabled = true;
 		}
@@ -71,15 +78,35 @@ namespace ARMenu.Scripts.Runtime.Services.DishTracker
 					Debug.LogError($"Can't find texture in reference image {addedImage.name}.");
 					continue;
 				}
-
-				if (TryGetLinkedDishData(addedImage, out Dish linkedDish) == false)
-				{
-					continue;
-				}
-
-				// Spawn prefab when its tracked image was added.
-				AddDishPrefabAsync(addedImage, linkedDish);
+				PrepareDishReference(addedImage);
 			}
+		}
+
+		private async void PrepareDishReference(ARTrackedImage addedImage)
+		{
+			XRReferenceImage referenceImage = addedImage.referenceImage;
+			if (_imageLibrary.TryGetLinkedData(referenceImage.name, out AssetReferenceDish dishReference) == false)
+			{
+				Debug.LogError("Can't find linked dish asset reference.");
+				return;
+			}
+
+			// Spawn prefab when its tracked image was added.
+			Dish linkedDish = await _assetProvider.LoadAssetAsync<Dish>(dishReference);
+			if (_trackingDishes.TryGetValue(addedImage.name, out TrackingData trackingData) == false)
+			{
+				trackingData = new TrackingData();
+				_trackingDishes[addedImage.name] = trackingData;
+			}
+			trackingData.cachedDish = linkedDish;
+			AddDishPrefab(addedImage, linkedDish);
+		}
+
+		private void AddDishPrefab(ARTrackedImage addedImage, Dish linkedDish)
+		{
+			GameObject dish = Object.Instantiate(linkedDish.prefab, addedImage.transform);
+			dish.SetActive(false); // Deactivate object, because it visible state is set inside HandleUpdatedImages method.
+			_trackingDishes[addedImage.name].spawnedPrefab = dish;
 		}
 
 		/// <summary>
@@ -114,20 +141,16 @@ namespace ARMenu.Scripts.Runtime.Services.DishTracker
 					continue;
 				}
 				// Find tracked image with prepared Dish game object.
-				if (_trackingDishes.TryGetValue(updatedImage.name, out GameObject dish) == false)
-				{
-					continue;
-				}
-				// Find tracked image with linked Dish data.
-				if (TryGetLinkedDishData(updatedImage, out Dish dishData) == false)
+				if (_trackingDishes.TryGetValue(updatedImage.name, out TrackingData trackingData) == false)
 				{
 					continue;
 				}
 
 				// Reinitialize current tracked values.
-				_currentTrackedData.Set(updatedImage, dish);
-				dish.SetActive(true);
-				TrackingChanged?.Invoke(dishData);
+				GameObject dishObject = trackingData.spawnedPrefab;
+				_currentTrackedData.Set(updatedImage, dishObject);
+				dishObject.SetActive(true);
+				TrackingChanged?.Invoke(trackingData.cachedDish);
 
 				// Stop function, because we have found required image.
 				return;
@@ -143,42 +166,21 @@ namespace ARMenu.Scripts.Runtime.Services.DishTracker
 		{
 			foreach (ARTrackedImage removedImage in removedImages)
 			{
-				if (_trackingDishes.TryGetValue(removedImage.name, out GameObject dish) == false)
+				if (_trackingDishes.TryGetValue(removedImage.name, out TrackingData trackingData) == false)
 				{
 					continue;
 				}
 
 				_trackingDishes.Remove(removedImage.name);
-				CleanTrackingDish(dish);
+				CleanTrackingDish(trackingData.spawnedPrefab);
 			}
-		}
-
-		private bool TryGetLinkedDishData(ARTrackedImage addedImage, out Dish linkedDish)
-		{
-			string imageName = addedImage.referenceImage.texture.name;
-			if (_imageLibrary.TryGetLinkedDish(imageName, out linkedDish))
-			{
-				return true;
-			}
-
-			Debug.LogError($"Can't find linked dish for {imageName} image.");
-			return false;
-		}
-
-		// TODO: fix problem when instantiate is called after removed.
-		private async void AddDishPrefabAsync(ARTrackedImage addedImage, Dish linkedDish)
-		{
-			GameObject dishPrefab = await _assetProvider.LoadAssetAsync<GameObject>(linkedDish.prefabPath);
-			GameObject dish = Object.Instantiate(dishPrefab, addedImage.transform);
-			dish.SetActive(false); // Deactivate object, because it visible state is set inside HandleUpdatedImages method.
-			_trackingDishes[addedImage.name] = dish;
 		}
 
 		private void CleanTrackingDishes()
 		{
-			foreach (GameObject dish in _trackingDishes.Values)
+			foreach (TrackingData trackingData in _trackingDishes.Values)
 			{
-				CleanTrackingDish(dish);
+				CleanTrackingDish(trackingData.spawnedPrefab);
 			}
 			_trackingDishes.Clear();
 		}

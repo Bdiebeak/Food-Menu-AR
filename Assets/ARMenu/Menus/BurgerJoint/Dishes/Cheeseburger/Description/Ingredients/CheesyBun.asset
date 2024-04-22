@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 441132a194774482a8928e1b53dc42ba, type: 3}
   m_Name: CheesyBun
   m_EditorClassIdentifier: 
-  image: {fileID: 21300000, guid: 915f0fd1540c42446be18b05a59d0719, type: 3}
   title: Cheesy Bun
   description: Crafted to perfection bun with a golden, cheesy crust that adds a
     rich, savory dimension to every bite.
+  previewImage: {fileID: 2800000, guid: 915f0fd1540c42446be18b05a59d0719, type: 3}

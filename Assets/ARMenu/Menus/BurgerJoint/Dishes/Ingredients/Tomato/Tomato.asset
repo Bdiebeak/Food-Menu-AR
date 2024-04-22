@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 441132a194774482a8928e1b53dc42ba, type: 3}
   m_Name: Tomato
   m_EditorClassIdentifier: 
-  image: {fileID: 21300000, guid: 27bd89108ad6e1442bbd4922b4bfe445, type: 3}
   title: Tomato
   description: Ripe, juicy tomato slices deliver a burst of freshness and tangy flavor.
+  previewImage: {fileID: 2800000, guid: 27bd89108ad6e1442bbd4922b4bfe445, type: 3}

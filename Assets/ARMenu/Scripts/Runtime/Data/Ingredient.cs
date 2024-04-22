@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.AddressableAssets;
 
 namespace ARMenu.Scripts.Runtime.Data
 {
@@ -9,6 +8,6 @@ namespace ARMenu.Scripts.Runtime.Data
 		public string title;
 		public string description;
 		[Space]
-		public AssetReferenceSprite image;
+		public Texture2D previewImage;
 	}
 }

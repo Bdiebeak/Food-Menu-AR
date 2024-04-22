@@ -1,5 +1,6 @@
 ﻿using ARMenu.Scripts.Runtime.Data;
 using ARMenu.Scripts.Runtime.Data.ImageLibrary;
+using ARMenu.Scripts.Runtime.Data.ImageLibrary.Dishes;
 using ARMenu.Scripts.Runtime.Infrastructure.Constants;
 using ARMenu.Scripts.Runtime.Services.AssetProvider;
 using ARMenu.Scripts.Runtime.Services.DishTracker;
@@ -36,9 +37,9 @@ namespace ARMenu.Scripts.Runtime.Infrastructure
 			_dishTracker.TrackingLost += OnTrackingLost;
 			DishImageLibrary imageLibrary = await _assetProvider.LoadAssetAsync<DishImageLibrary>(AssetKeys.BurgersLibraryKey);
 			_dishTracker.Initialize(imageLibrary);
-			_hintScreenModel.SetHint("Please, scan a QR code.");
 			_screenService.HideAll();
 			_screenService.GetScreen<HintUxmlScreen>().Show();
+			_hintScreenModel.SetHint("Please, scan a QR code.");
 		}
 
 		private void OnDestroy()
@@ -60,8 +61,8 @@ namespace ARMenu.Scripts.Runtime.Infrastructure
 		private void OnTrackingLost()
 		{
 			_screenService.GetScreen<DishDescriptionUxmlScreen>().Hide();
-			_hintScreenModel.SetHint("Please, scan a QR code.");
 			_screenService.GetScreen<HintUxmlScreen>().Show();
+			_hintScreenModel.SetHint("Please, scan a QR code.");
 		}
 	}
 }

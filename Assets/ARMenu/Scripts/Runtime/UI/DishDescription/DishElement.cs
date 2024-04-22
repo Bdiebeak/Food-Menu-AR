@@ -1,7 +1,7 @@
 ﻿using ARMenu.Scripts.Runtime.UI.General.Uxml;
 using UnityEngine.UIElements;
 
-namespace ARMenu.Scripts.Runtime.UI.Elements
+namespace ARMenu.Scripts.Runtime.UI.DishDescription
 {
 	public class DishElement : UxmlElementsContainer
 	{
