@@ -1,15 +1,10 @@
-using ARMenu.Scripts.Runtime.UI.General.Uxml;
+using ARMenu.Scripts.Runtime.UI.General.UXML;
 using Unity.Properties;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace ARMenu.Scripts.Runtime.UI.DishDescription
 {
-	/// <summary>
-	/// Своего рода View из MVVM.
-	/// View - должен обраабатывать пользовательский ввод, изменяя ViewModel и отображать его текущее состояние
-	/// на основе биндинга данных.
-	/// </summary>
 	public class DishDescriptionUxmlScreen : UxmlBaseScreen<DishDescriptionViewModel>
 	{
 		private readonly DishDescriptionUxmlElements _elements;

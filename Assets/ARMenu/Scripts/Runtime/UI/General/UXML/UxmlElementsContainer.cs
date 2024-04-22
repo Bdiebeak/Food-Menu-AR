@@ -1,6 +1,6 @@
 ﻿using UnityEngine.UIElements;
 
-namespace ARMenu.Scripts.Runtime.UI.General.Uxml
+namespace ARMenu.Scripts.Runtime.UI.General.UXML
 {
 	public abstract class UxmlElementsContainer
 	{

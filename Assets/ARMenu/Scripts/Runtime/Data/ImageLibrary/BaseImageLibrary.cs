@@ -17,17 +17,19 @@ namespace ARMenu.Scripts.Runtime.Data.ImageLibrary
 
 		public XRReferenceImageLibrary XRReferenceImageLibrary => _xrReferenceImageLibrary;
 
-		public void AppendLinkedData(string imageName, TData linkedData)
+		public bool TryGetLinkedData(XRReferenceImage referenceImage, out TData linkedData)
 		{
-			_imageToDataNodes.Add(new ImageToDataNode<TData>(imageName, linkedData));
+			return TryGetLinkedData(referenceImage.name, out linkedData);
 		}
 
-		public bool TryGetLinkedData(string imageName, out TData linkedData)
+		public bool TryGetLinkedData(string referenceImageName, out TData linkedData)
 		{
-			ImageToDataNode<TData> node = _imageToDataNodes.FirstOrDefault(x => x.arImageName.Equals(imageName));
+			ImageToDataNode<TData> node = _imageToDataNodes.FirstOrDefault(x => x.referenceImageName.Equals(referenceImageName));
 			linkedData = node?.linkedData;
 			return node != null;
 		}
+
+#if UNITY_EDITOR
 
 		public override void AppendDataFromImageLibrary()
 		{
@@ -40,10 +42,10 @@ namespace ARMenu.Scripts.Runtime.Data.ImageLibrary
 					continue;
 				}
 
-				if (_imageToDataNodes.Any(x => x.arImageName == referenceImage.name) == false)
+				if (_imageToDataNodes.Any(x => x.referenceImageName == referenceImage.name) == false)
 				{
 					wasAdded = true;
-					_imageToDataNodes.Add(new ImageToDataNode<TData>(referenceImage.name, default));
+					_imageToDataNodes.Add(new ImageToDataNode<TData>(referenceImage, default));
 					Debug.Log($"Image data for {referenceImage.name} was added.");
 				}
 			}
@@ -69,9 +71,9 @@ namespace ARMenu.Scripts.Runtime.Data.ImageLibrary
 						continue;
 					}
 
-					if (_imageToDataNodes[j].arImageName == currentDataNode.arImageName)
+					if (_imageToDataNodes[j].referenceImageName == currentDataNode.referenceImageName)
 					{
-						Debug.LogWarning($"Image data for {currentDataNode.arImageName} is set few times. Indexes: {i} and {j}.");
+						Debug.LogWarning($"Image data for {currentDataNode.referenceImageName} is set few times. Indexes: {i} and {j}.");
 						isCorrect = false;
 					}
 				}
@@ -81,7 +83,7 @@ namespace ARMenu.Scripts.Runtime.Data.ImageLibrary
 			for (int i = 0; i < _xrReferenceImageLibrary.count; i++)
 			{
 				XRReferenceImage referenceImage = _xrReferenceImageLibrary[i];
-				if (_imageToDataNodes.Any(x => x.arImageName == referenceImage.name) == false)
+				if (_imageToDataNodes.Any(x => x.referenceImageName == referenceImage.name) == false)
 				{
 					Debug.LogWarning($"Image data for {referenceImage.name} wasn't set.");
 					isCorrect = false;
@@ -93,5 +95,7 @@ namespace ARMenu.Scripts.Runtime.Data.ImageLibrary
 				Debug.Log("Every reference is set up correctly.");
 			}
 		}
+
+#endif
 	}
 }

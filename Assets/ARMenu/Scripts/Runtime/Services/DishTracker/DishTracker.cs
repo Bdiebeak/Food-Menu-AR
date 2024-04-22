@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using ARMenu.Scripts.Runtime.Data;
-using ARMenu.Scripts.Runtime.Data.ImageLibrary;
 using ARMenu.Scripts.Runtime.Data.ImageLibrary.Dishes;
 using ARMenu.Scripts.Runtime.Services.AssetProvider;
 using UnityEngine;
@@ -85,7 +84,7 @@ namespace ARMenu.Scripts.Runtime.Services.DishTracker
 		private async void PrepareDishReference(ARTrackedImage addedImage)
 		{
 			XRReferenceImage referenceImage = addedImage.referenceImage;
-			if (_imageLibrary.TryGetLinkedData(referenceImage.name, out AssetReferenceDish dishReference) == false)
+			if (_imageLibrary.TryGetLinkedData(referenceImage, out AssetReferenceDish dishReference) == false)
 			{
 				Debug.LogError("Can't find linked dish asset reference.");
 				return;

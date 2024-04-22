@@ -5,13 +5,10 @@ using UnityEngine;
 
 namespace ARMenu.Scripts.Editor.Addressables
 {
-	[CreateAssetMenu(fileName = "BuildScriptPackedModeWithXR.asset", menuName = "Addressables/Content Builders/XR Build Script")]
+	[CreateAssetMenu(fileName = nameof(BuildScriptPackedModeWithXR), menuName = "Addressables/Content Builders/XR Build Script")]
 	public class BuildScriptPackedModeWithXR : BuildScriptPackedMode
 	{
-		public override string Name
-		{
-			get { return "Build Script With XR"; }
-		}
+		public override string Name => "Build Script With XR";
 
 		protected override TResult BuildDataImplementation<TResult>(AddressablesDataBuilderInput builderInput)
 		{

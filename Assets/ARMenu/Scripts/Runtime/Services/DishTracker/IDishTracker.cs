@@ -1,6 +1,5 @@
 using System;
 using ARMenu.Scripts.Runtime.Data;
-using ARMenu.Scripts.Runtime.Data.ImageLibrary;
 using ARMenu.Scripts.Runtime.Data.ImageLibrary.Dishes;
 
 namespace ARMenu.Scripts.Runtime.Services.DishTracker

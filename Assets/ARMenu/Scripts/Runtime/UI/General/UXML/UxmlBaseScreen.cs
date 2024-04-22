@@ -1,8 +1,8 @@
 ﻿using ARMenu.Scripts.Runtime.Services.ScreenService;
-using ARMenu.Scripts.Runtime.UI.General.Mvvm;
+using ARMenu.Scripts.Runtime.UI.General.MVVM;
 using UnityEngine.UIElements;
 
-namespace ARMenu.Scripts.Runtime.UI.General.Uxml
+namespace ARMenu.Scripts.Runtime.UI.General.UXML
 {
 	public abstract class UxmlBaseScreen<TViewModel> : View<TViewModel>, IScreen where TViewModel : ViewModel
 	{

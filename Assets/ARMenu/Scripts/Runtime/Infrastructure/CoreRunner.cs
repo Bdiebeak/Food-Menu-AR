@@ -1,5 +1,4 @@
 ﻿using ARMenu.Scripts.Runtime.Data;
-using ARMenu.Scripts.Runtime.Data.ImageLibrary;
 using ARMenu.Scripts.Runtime.Data.ImageLibrary.Dishes;
 using ARMenu.Scripts.Runtime.Infrastructure.Constants;
 using ARMenu.Scripts.Runtime.Services.AssetProvider;

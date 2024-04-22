@@ -1,4 +1,4 @@
-﻿using ARMenu.Scripts.Runtime.UI.General.Mvvm;
+﻿using ARMenu.Scripts.Runtime.UI.General.MVVM;
 using Unity.Properties;
 
 namespace ARMenu.Scripts.Runtime.UI.ScanHint

@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 
 namespace ARMenu.Scripts.Editor.ImageLibrary
 {
-	[CustomEditor(typeof(BaseImageLibrary<>), true)]
+	[CustomEditor(typeof(ImageLibraryScriptableObject), true)]
 	public class ImageLibraryEditor : UnityEditor.Editor
 	{
 		public VisualTreeAsset inspectorUXML;
@@ -17,10 +17,8 @@ namespace ARMenu.Scripts.Editor.ImageLibrary
 			VisualElement inspector = new();
 			inspectorUXML.CloneTree(inspector);
 
-			VisualElement defaultInspectorView = inspector.Q("DefaultInspectorView");
-			InspectorElement.FillDefaultInspector(defaultInspectorView, serializedObject, this);
-
 			InitializeDefaultValues();
+			InitializeDefaultInspector(inspector.Q<VisualElement>("DefaultInspectorView"));
 			InitializeAutoFillButton(inspector.Q<Button>("AutoAppendButton"));
 			InitializeValidateButton(inspector.Q<Button>("ValidateButton"));
 
@@ -30,6 +28,11 @@ namespace ARMenu.Scripts.Editor.ImageLibrary
 		private void InitializeDefaultValues()
 		{
 			_imageLibrarySO = target as ImageLibraryScriptableObject;
+		}
+
+		private void InitializeDefaultInspector(VisualElement defaultInspectorView)
+		{
+			InspectorElement.FillDefaultInspector(defaultInspectorView, serializedObject, this);
 		}
 
 		private void InitializeAutoFillButton(Button fillButton)

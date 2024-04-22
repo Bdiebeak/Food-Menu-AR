@@ -15,14 +15,14 @@ MonoBehaviour:
   _xrReferenceImageLibrary: {fileID: 11400000, guid: 0aadc902ec8facf46b22f17528d4e9ab,
     type: 2}
   _imageToDataNodes:
-  - arImageName: CheeseburgerImage
+  - referenceImageName: CheeseburgerImage
     linkedData:
       m_AssetGUID: 824c40ceff549bd4fbc65d4debc0c6ac
       m_SubObjectName: 
       m_SubObjectGUID: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-  - arImageName: ExtraburgerImage
+  - referenceImageName: ExtraburgerImage
     linkedData:
       m_AssetGUID: adc3971600d56644ca98d3183156176e
       m_SubObjectName: 

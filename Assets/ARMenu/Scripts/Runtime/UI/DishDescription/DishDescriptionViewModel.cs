@@ -1,35 +1,23 @@
 ﻿using System;
 using System.Text;
 using ARMenu.Scripts.Runtime.Data;
-using ARMenu.Scripts.Runtime.UI.General.Mvvm;
+using ARMenu.Scripts.Runtime.UI.General.MVVM;
 using Unity.Properties;
 using UnityEngine;
 
 namespace ARMenu.Scripts.Runtime.UI.DishDescription
 {
-	/// <summary>
-	/// Своего рода ViewModel из MVVM.
-	/// Хранит данные, необходимые только View (состояние UI), а также логику обработки команд со стороны View
-	/// для изменения Model.
-	/// Так, например, ViewModel будет дублировать только те поля модели, которые нужно отобразить на View.
-	/// А также включать в себя обработчики логики, которые вызываются при взаимодействии с UI.
-	/// </summary>
 	public class DishDescriptionViewModel : ViewModel
 	{
 		[CreateProperty(ReadOnly = true)] public string DishName { get; private set; }
 		[CreateProperty(ReadOnly = true)] public string DishDescription { get; private set; }
 		[CreateProperty(ReadOnly = true)] public string IngredientName { get; private set; }
 		[CreateProperty(ReadOnly = true)] public string IngredientDescription { get; private set; }
-		// TODO: bind images.
 		public Texture2D DishImage { get; private set; }
 		public Texture2D IngredientImage { get; private set; }
 
 		public event Action<bool> CollapseStateChanged;
 
-		/// <summary>
-		/// Своего рода Model из MVVM.
-		/// Данные приложения, которые не относятся к состоянию UI.
-		/// </summary>
 		private Dish _dish;
 		private int _ingredientIndex;
 		private bool _isCollapsed;
