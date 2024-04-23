@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
@@ -15,7 +14,7 @@ namespace ARMenu.Scripts.Runtime.Services.AssetProvider
 			Addressables.InitializeAsync();
 		}
 
-		public async Awaitable<T> LoadAssetAsync<T>(string assetKey) where T : class
+		public async Task<T> LoadAssetAsync<T>(string assetKey) where T : class
 		{
 			if (_completedOperations.TryGetValue(assetKey, out AsyncOperationHandle completeHandle))
 			{
@@ -24,7 +23,7 @@ namespace ARMenu.Scripts.Runtime.Services.AssetProvider
 			return await LoadAndCache<T>(assetKey);
 		}
 
-		public async Awaitable<T> LoadAssetAsync<T>(AssetReference assetReference) where T : class
+		public async Task<T> LoadAssetAsync<T>(AssetReference assetReference) where T : class
 		{
 			if (_completedOperations.TryGetValue(assetReference.AssetGUID, out AsyncOperationHandle completeHandle))
 			{
@@ -33,7 +32,7 @@ namespace ARMenu.Scripts.Runtime.Services.AssetProvider
 			return await LoadAndCache<T>(assetReference);
 		}
 
-		private async Awaitable<T> LoadAndCache<T>(string assetKey) where T : class
+		private async Task<T> LoadAndCache<T>(string assetKey) where T : class
 		{
 			await Task.Delay(2500); // TODO: remove it, testing only.
 
@@ -44,7 +43,7 @@ namespace ARMenu.Scripts.Runtime.Services.AssetProvider
 			return loadingOperation.Result;
 		}
 
-		private async Awaitable<T> LoadAndCache<T>(AssetReference assetReference) where T : class
+		private async Task<T> LoadAndCache<T>(AssetReference assetReference) where T : class
 		{
 			await Task.Delay(2500); // TODO: remove it, testing only.
 

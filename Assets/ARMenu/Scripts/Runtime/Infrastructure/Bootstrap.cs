@@ -1,7 +1,5 @@
-﻿using ARMenu.Scripts.Runtime.Data.ImageLibrary.Dishes;
-using ARMenu.Scripts.Runtime.Infrastructure.Constants;
-using ARMenu.Scripts.Runtime.Services.AssetProvider;
-using ARMenu.Scripts.Runtime.Services.DishTracker;
+﻿using ARMenu.Scripts.Runtime.Services.AssetProvider;
+using ARMenu.Scripts.Runtime.Services.ImageTracker;
 using ARMenu.Scripts.Runtime.Services.ScreenService;
 using ARMenu.Scripts.Runtime.UI.DishDescription;
 using ARMenu.Scripts.Runtime.UI.ScanHint;
@@ -28,7 +26,7 @@ namespace ARMenu.Scripts.Runtime.Infrastructure
 		private UIDocument _coreUI;
 
 		private IAssetProvider _assetProvider;
-		private IDishTracker _dishTracker;
+		private IImageTracker _imageTracker;
 		private IScreenService _screenService;
 
 		private DishDescriptionViewModel _dishScreenModel;
@@ -39,12 +37,11 @@ namespace ARMenu.Scripts.Runtime.Infrastructure
 			Initialize();
 		}
 
-		private async void Initialize()
+		private void Initialize()
 		{
 			InstantiatePrefabs();
 			InitializeServices();
 			InitializeScreens();
-			await PreloadAssets();
 			InitializeCore();
 		}
 
@@ -59,7 +56,7 @@ namespace ARMenu.Scripts.Runtime.Infrastructure
 		{
 			_assetProvider = new AssetProvider();
 			_assetProvider.Initialize();
-			_dishTracker = new DishTracker(_assetProvider, _imageManager);
+			_imageTracker = new SingleImageTracker(_imageManager);
 			_screenService = new ScreenService();
 		}
 
@@ -70,21 +67,13 @@ namespace ARMenu.Scripts.Runtime.Infrastructure
 
 			_screenService.RegisterScreen(new DishDescriptionUxmlScreen(_coreUI, _dishScreenModel));
 			_screenService.RegisterScreen(new HintUxmlScreen(_coreUI, _hintScreenModel));
-
 			_screenService.HideAll();
-			_screenService.GetScreen<HintUxmlScreen>().Show();
-			_hintScreenModel.SetHint("Loading...");
-		}
-
-		private async Awaitable PreloadAssets()
-		{
-			await _assetProvider.LoadAssetAsync<DishImageLibrary>(AssetKeys.BurgersLibraryKey);
 		}
 
 		private void InitializeCore()
 		{
 			CoreRunner coreRunner = Instantiate(coreRunnerPrefab);
-			coreRunner.Initialize(_assetProvider, _dishTracker, _screenService, _dishScreenModel, _hintScreenModel);
+			coreRunner.Initialize(_assetProvider, _imageTracker, _screenService, _dishScreenModel, _hintScreenModel);
 		}
 	}
 }
