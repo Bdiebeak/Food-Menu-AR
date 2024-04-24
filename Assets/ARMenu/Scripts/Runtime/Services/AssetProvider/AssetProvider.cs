@@ -11,9 +11,9 @@ namespace ARMenu.Scripts.Runtime.Services.AssetProvider
 		private readonly Dictionary<string, AsyncOperationHandle> _completedHandles = new();
 		private readonly Dictionary<string, AsyncOperationHandle> _processingHandles = new();
 
-		public void Initialize()
+		public async Task InitializeAsync()
 		{
-			Addressables.InitializeAsync();
+			await Addressables.InitializeAsync().Task;
 		}
 
 		public void CleanUp()

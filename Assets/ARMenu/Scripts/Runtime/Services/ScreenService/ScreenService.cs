@@ -22,6 +22,19 @@ namespace ARMenu.Scripts.Runtime.Services.ScreenService
 			return (TScreen)screen;
 		}
 
+		public void Show<TScreen>() where TScreen : IScreen
+		{
+			HideAll();
+			TScreen screen = GetScreen<TScreen>();
+			screen.Show();
+		}
+
+		public void Hide<TScreen>() where TScreen : IScreen
+		{
+			TScreen screen = GetScreen<TScreen>();
+			screen.Hide();
+		}
+
 		public void HideAll()
 		{
 			foreach (IScreen screen in _screens.Values)
