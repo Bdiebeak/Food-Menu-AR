@@ -66,32 +66,30 @@ namespace ARMenu.Scripts.Runtime.Infrastructure
 		}
 
 		private XRReferenceImage _currentImage;
-        private Dictionary<XRReferenceImage, Task<Dish>> _loadingOperations = new();
-        private Dictionary<XRReferenceImage, Dish> _linkedDishes = new();
+        private Dictionary<XRReferenceImage, TaskCompletionSource<Dish>> _completionSources = new();
 
 		private async void OnImageTrackerAdded(ARTrackedImage trackedImage)
 		{
 			Debug.Log($"Added: {trackedImage.referenceImage.name}");
 
 			XRReferenceImage referenceImage = trackedImage.referenceImage;
-			if (_imageLibrary.TryGetLinkedData(referenceImage, out AssetReferenceDish assetToLoad) == false)
+			if (_imageLibrary.TryGetLinkedData(referenceImage, out AssetReferenceDish assetReference) == false)
 			{
 				Debug.LogError($"Can't find required dish by reference image {trackedImage.referenceImage.name}.");
 				return;
 			}
 
-			if (_loadingOperations.ContainsKey(referenceImage))
+			if (_completionSources.ContainsKey(referenceImage))
 			{
-				Debug.LogWarning($"Linked data for {referenceImage.name} image is already loading.");
 				return;
 			}
 
-			Task<Dish> loadingOperation = _assetProvider.LoadAssetAsync<Dish>(assetToLoad);
-			_loadingOperations.Add(referenceImage, loadingOperation);
+			Task<Dish> loadingOperation = _assetProvider.LoadAssetAsync<Dish>(assetReference);
+			TaskCompletionSource<Dish> taskCompletionSource = new();
+			_completionSources.Add(referenceImage, taskCompletionSource);
 
 			Dish loadedAsset = await loadingOperation;
-			_linkedDishes.Add(referenceImage, loadedAsset);
-			_loadingOperations.Remove(referenceImage);
+			taskCompletionSource.SetResult(loadedAsset);
 		}
 
 		private void OnImageTrackerUpdated(ARTrackedImage trackedImage)
@@ -102,7 +100,11 @@ namespace ARMenu.Scripts.Runtime.Infrastructure
 		private void OnImageTrackerRemoved(ARTrackedImage trackedImage)
 		{
 			Debug.Log($"Removed: {trackedImage.referenceImage.name}");
-			// TODO: unload asset
+			XRReferenceImage referenceImage = trackedImage.referenceImage;
+			if (_imageLibrary.TryGetLinkedData(referenceImage, out AssetReferenceDish assetReference) == false)
+			{
+				_assetProvider.ReleaseAsset(assetReference);
+			}
 		}
 
 		private async void OnImageTrackerActiveTrackingChanged(TrackingChangedEventArgs eventArgs)
@@ -119,24 +121,30 @@ namespace ARMenu.Scripts.Runtime.Infrastructure
 			// TODO: deactivate previous and activate new.
 
 			_currentImage = eventArgs.Current.referenceImage;
-			if (_loadingOperations.TryGetValue(_currentImage, out Task<Dish> operation))
+			if (_completionSources.TryGetValue(_currentImage, out TaskCompletionSource<Dish> completionSource) == false)
+			{
+				Debug.LogError($"Can't find completion source for {_currentImage.name}. It can mean that Added event wasn't handled for this.");
+				return;
+			}
+
+			if (completionSource.Task.IsCompleted == false)
 			{
 				_screenService.GetScreen<DishDescriptionUxmlScreen>().Hide();
 				_screenService.GetScreen<HintUxmlScreen>().Show();
 				_hintScreenModel.SetHint("Dish data is loading.");
 
-				await operation;
+				await completionSource.Task;
+			}
 
-				// Additional check to match the current image after async operation.
-				if (_currentImage != eventArgs.Current.referenceImage)
-				{
-					return;
-				}
+			// Additional check to match the current image after async operation.
+			if (_currentImage != eventArgs.Current.referenceImage)
+			{
+				return;
 			}
 
 			_screenService.GetScreen<HintUxmlScreen>().Hide();
 			_screenService.GetScreen<DishDescriptionUxmlScreen>().Show();
-			_dishDescriptionModel.SetDish(_linkedDishes[_currentImage]);
+			_dishDescriptionModel.SetDish(completionSource.Task.Result);
 		}
 
 		private void OnImageTrackerAnyTrackingLost()

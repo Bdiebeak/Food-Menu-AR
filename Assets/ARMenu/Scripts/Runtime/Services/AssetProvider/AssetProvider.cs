@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
@@ -7,51 +8,79 @@ namespace ARMenu.Scripts.Runtime.Services.AssetProvider
 {
 	public class AssetProvider : IAssetProvider
 	{
-		private readonly Dictionary<string, AsyncOperationHandle> _completedOperations = new();
+		private readonly Dictionary<string, AsyncOperationHandle> _completedHandles = new();
+		private readonly Dictionary<string, AsyncOperationHandle> _processingHandles = new();
 
 		public void Initialize()
 		{
 			Addressables.InitializeAsync();
 		}
 
+		public void CleanUp()
+		{
+			foreach (AsyncOperationHandle handle in _completedHandles.Values)
+			{
+				ReleaseByHandle(handle);
+			}
+		}
+
 		public async Task<T> LoadAssetAsync<T>(string assetKey) where T : class
 		{
-			if (_completedOperations.TryGetValue(assetKey, out AsyncOperationHandle completeHandle))
-			{
-				return completeHandle.Result as T;
-			}
-			return await LoadAndCache<T>(assetKey);
+			return await Load<T>(assetKey);
 		}
 
 		public async Task<T> LoadAssetAsync<T>(AssetReference assetReference) where T : class
 		{
-			if (_completedOperations.TryGetValue(assetReference.AssetGUID, out AsyncOperationHandle completeHandle))
+			return await Load<T>(assetReference.AssetGUID);
+		}
+
+		public void ReleaseAsset(string assetKey)
+		{
+			Release(assetKey);
+		}
+
+		public void ReleaseAsset(AssetReference assetReference)
+		{
+			Release(assetReference.AssetGUID);
+		}
+
+		private void Release(string assetKey)
+		{
+			if (_completedHandles.TryGetValue(assetKey, out AsyncOperationHandle completeHandle))
+			{
+				ReleaseByHandle(completeHandle);
+			}
+		}
+
+		private async Task<T> Load<T>(string assetKey) where T : class
+		{
+			// If asset with required key was already loaded - return result of operation.
+			if (_completedHandles.TryGetValue(assetKey, out AsyncOperationHandle completeHandle))
 			{
 				return completeHandle.Result as T;
 			}
-			return await LoadAndCache<T>(assetReference);
-		}
 
-		private async Task<T> LoadAndCache<T>(string assetKey) where T : class
-		{
-			await Task.Delay(2500); // TODO: remove it, testing only.
+			// If asset with required key is loading right now - return this task.
+			if (_processingHandles.TryGetValue(assetKey, out AsyncOperationHandle processingHandle))
+			{
+				return processingHandle.Task as T;
+			}
 
 			AsyncOperationHandle<T> loadingOperation = Addressables.LoadAssetAsync<T>(assetKey);
+			_processingHandles.Add(assetKey, loadingOperation);
+
 			await loadingOperation.Task;
-			_completedOperations.Add(assetKey, loadingOperation);
+			await Awaitable.WaitForSecondsAsync(3); // TODO: remove test only.
+
+			_completedHandles.Add(assetKey, loadingOperation);
+			_processingHandles.Remove(assetKey);
 
 			return loadingOperation.Result;
 		}
 
-		private async Task<T> LoadAndCache<T>(AssetReference assetReference) where T : class
+		private void ReleaseByHandle(AsyncOperationHandle operationHandle)
 		{
-			await Task.Delay(2500); // TODO: remove it, testing only.
-
-			AsyncOperationHandle<T> loadingOperation = Addressables.LoadAssetAsync<T>(assetReference);
-			await loadingOperation.Task;
-			_completedOperations.Add(assetReference.AssetGUID, loadingOperation);
-
-			return loadingOperation.Result;
+			Addressables.Release(operationHandle);
 		}
 	}
 }
