@@ -50,6 +50,10 @@ namespace ARMenu.Scripts.Runtime.Services.AssetProvider
 			{
 				ReleaseByHandle(completeHandle);
 			}
+			else if (_processingHandles.TryGetValue(assetKey, out AsyncOperationHandle processingHandle))
+			{
+				ReleaseByHandle(processingHandle);
+			}
 		}
 
 		private async Task<T> Load<T>(string assetKey) where T : class

@@ -13,6 +13,8 @@ namespace ARMenu.Scripts.Runtime.Infrastructure
 	/// Isn't the best bootstrap logic.
 	/// But this is enough for me and this example project, I don't want to complicate it.
 	/// There could be some additional factories e.g. UIFactory or CoreFactory.
+	///
+	/// Bootstrap only do registration of services.
 	/// </summary>
 	public class Bootstrap : MonoBehaviour
 	{
@@ -24,6 +26,7 @@ namespace ARMenu.Scripts.Runtime.Infrastructure
 		private ARTrackedImageManager _imageManager;
 		private ARSession _arSession;
 		private UIDocument _coreUI;
+		private CoreRunner _coreRunner;
 
 		private IAssetProvider _assetProvider;
 		private IImageTracker _imageTracker;
@@ -50,12 +53,12 @@ namespace ARMenu.Scripts.Runtime.Infrastructure
 			_imageManager = Instantiate(trackedImageManagerPrefab);
 			_arSession = Instantiate(arSessionPrefab);
 			_coreUI = Instantiate(coreUIPrefab);
+			_coreRunner = Instantiate(coreRunnerPrefab);
 		}
 
 		private void InitializeServices()
 		{
 			_assetProvider = new AssetProvider();
-			_assetProvider.Initialize();
 			_imageTracker = new SingleImageTracker(_imageManager);
 			_screenService = new ScreenService();
 		}
@@ -64,16 +67,13 @@ namespace ARMenu.Scripts.Runtime.Infrastructure
 		{
 			_dishScreenModel = new DishDescriptionViewModel();
 			_hintScreenModel = new HintViewModel();
-
 			_screenService.RegisterScreen(new DishDescriptionUxmlScreen(_coreUI, _dishScreenModel));
 			_screenService.RegisterScreen(new HintUxmlScreen(_coreUI, _hintScreenModel));
-			_screenService.HideAll();
 		}
 
 		private void InitializeCore()
 		{
-			CoreRunner coreRunner = Instantiate(coreRunnerPrefab);
-			coreRunner.Initialize(_assetProvider, _imageTracker, _screenService, _dishScreenModel, _hintScreenModel);
+			_coreRunner.Initialize(_assetProvider, _imageTracker, _screenService, _dishScreenModel, _hintScreenModel);
 		}
 	}
 }
