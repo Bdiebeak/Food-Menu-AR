@@ -15,8 +15,8 @@ namespace ARMenu.Scripts.Editor.Baker
 		/// </summary>
 		/// <param name="fullPath">The complete path including the file name and extension.</param>
 		/// <param name="camera">The camera whose render will be baked.</param>
-		/// <param name="texture">Temporary <typeparamref name="Texture2D"/> is used for baking the image and saving.</param>
-		/// <param name="renderTexture">Temporary <typeparamref name="RenderTexture"/> is used for baking the image and saving.</param>
+		/// <param name="texture">Temporary <see cref="Texture2D"/> is used for baking the image and saving.</param>
+		/// <param name="renderTexture">Temporary <see cref="RenderTexture"/> is used for baking the image and saving.</param>
 		public static void SaveCameraRender(string fullPath, Camera camera, Texture2D texture, RenderTexture renderTexture)
 		{
 			// Cache active textures to reset them after process.

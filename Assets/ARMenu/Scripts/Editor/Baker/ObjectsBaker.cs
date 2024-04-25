@@ -7,7 +7,11 @@ using Object = UnityEngine.Object;
 
 namespace ARMenu.Scripts.Editor.Baker
 {
-	public class DishBaker
+	/// <summary>
+	/// Responsible for baking the entire object and its child elements individually
+	/// by disabling each of them and baking only one.
+	/// </summary>
+	public class ObjectsBaker
 	{
 		public Camera cameraObject;
 		public Vector2Int resolution = new (1024, 1024);

@@ -10,9 +10,9 @@ using UnityEngine.XR.ARFoundation;
 namespace ARMenu.Scripts.Runtime.Infrastructure
 {
 	/// <summary>
-	/// Isn't the best bootstrap logic.
-	/// But this is enough for me and this example project, I don't want to complicate it.
-	/// There could be some additional factories or etc. And some DI-Container.
+	/// Creates services and registers them.
+	/// That is enough for me in this example project, I don't want to complicate it.
+	/// There could be some additional factories, DI-Container and etc.
 	/// </summary>
 	public class Bootstrap : MonoBehaviour
 	{

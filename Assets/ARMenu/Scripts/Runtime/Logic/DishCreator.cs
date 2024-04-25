@@ -14,6 +14,10 @@ using UnityEngine.XR.ARSubsystems;
 
 namespace ARMenu.Scripts.Runtime.Logic
 {
+	/// <summary>
+	/// Additional class for extracting a large piece of logic from <see cref="CoreRunner"/>.
+	/// Connects the logic of tracking AR images and creating ART objects on them.
+	/// </summary>
 	public class DishCreator
 	{
 		private readonly IAssetProvider _assetProvider;
@@ -108,7 +112,7 @@ namespace ARMenu.Scripts.Runtime.Logic
 
 			if (completionSource.Task.IsCompleted == false)
 			{
-				ShowHintScreen("Dish data is loading.");
+				ShowHintScreen("Dish data is loading...");
 				await completionSource.Task;
 			}
 

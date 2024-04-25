@@ -12,7 +12,7 @@ namespace ARMenu.Scripts.Editor.Baker
 		public VisualTreeAsset windowUXML;
 		public VisualTreeAsset additionalElementUXML;
 
-		private readonly DishBaker _dishBaker = new();
+		private readonly ObjectsBaker _objectsBaker = new();
 
 		[MenuItem("Services/DishBaker")]
 		public static void ShowWindow()
@@ -38,16 +38,16 @@ namespace ARMenu.Scripts.Editor.Baker
 
 		private void InitializeDefaultValues()
 		{
-			_dishBaker.cameraObject = Camera.main;
-			_dishBaker.savePath = Application.dataPath;
+			_objectsBaker.cameraObject = Camera.main;
+			_objectsBaker.savePath = Application.dataPath;
 		}
 
 		private void InitializeResolutionField(Vector2IntField resolutionField)
 		{
 			resolutionField.SetBinding(nameof(Vector2IntField.value), new DataBinding()
 			{
-				dataSource = _dishBaker,
-				dataSourcePath = new PropertyPath(nameof(DishBaker.resolution)),
+				dataSource = _objectsBaker,
+				dataSourcePath = new PropertyPath(nameof(ObjectsBaker.resolution)),
 				bindingMode = BindingMode.TwoWay
 			});
 		}
@@ -56,8 +56,8 @@ namespace ARMenu.Scripts.Editor.Baker
 		{
 			cameraField.SetBinding(nameof(ObjectField.value), new DataBinding()
 			{
-				dataSource = _dishBaker,
-				dataSourcePath = new PropertyPath(nameof(DishBaker.cameraObject)),
+				dataSource = _objectsBaker,
+				dataSourcePath = new PropertyPath(nameof(ObjectsBaker.cameraObject)),
 				bindingMode = BindingMode.TwoWay
 			});
 		}
@@ -66,8 +66,8 @@ namespace ARMenu.Scripts.Editor.Baker
 		{
 			rootField.SetBinding(nameof(ObjectField.value), new DataBinding()
 			{
-				dataSource = _dishBaker,
-				dataSourcePath = new PropertyPath(nameof(DishBaker.rootObject)),
+				dataSource = _objectsBaker,
+				dataSourcePath = new PropertyPath(nameof(ObjectsBaker.rootObject)),
 				bindingMode = BindingMode.TwoWay
 			});
 		}
@@ -76,7 +76,7 @@ namespace ARMenu.Scripts.Editor.Baker
 		{
 			pathSelectButton.RegisterCallback<MouseUpEvent>(evt =>
 			{
-				_dishBaker.savePath = EditorUtility.OpenFolderPanel("Select Folder To Bake", Application.dataPath, "");
+				_objectsBaker.savePath = EditorUtility.OpenFolderPanel("Select Folder To Bake", Application.dataPath, "");
 			});
 		}
 
@@ -84,8 +84,8 @@ namespace ARMenu.Scripts.Editor.Baker
 		{
 			textField.SetBinding(nameof(TextField.value), new DataBinding()
 			{
-				dataSource = _dishBaker,
-				dataSourcePath = new PropertyPath(nameof(DishBaker.savePath)),
+				dataSource = _objectsBaker,
+				dataSourcePath = new PropertyPath(nameof(ObjectsBaker.savePath)),
 				bindingMode = BindingMode.TwoWay
 			});
 		}
@@ -93,15 +93,15 @@ namespace ARMenu.Scripts.Editor.Baker
 		private void InitializeListViewForAdditionalObjects(ListView listView)
 		{
 			listView.itemTemplate = additionalElementUXML;
-			listView.itemsSource = _dishBaker.additionalObjects;
+			listView.itemsSource = _objectsBaker.additionalObjects;
 			listView.bindItem = (element, i) =>
 			{
 				ObjectField objectField = element.Q<ObjectField>("ObjectField");
 				objectField.objectType = typeof(Transform);
-				objectField.value = _dishBaker.additionalObjects[i];
+				objectField.value = _objectsBaker.additionalObjects[i];
 				objectField.RegisterValueChangedCallback(value =>
 				{
-					_dishBaker.additionalObjects[i] = (Transform)value?.newValue;
+					_objectsBaker.additionalObjects[i] = (Transform)value?.newValue;
 				});
 			};
 
@@ -117,7 +117,7 @@ namespace ARMenu.Scripts.Editor.Baker
 				{
 					if (obj is GameObject gameObject)
 					{
-						_dishBaker.additionalObjects.Add(gameObject.transform);
+						_objectsBaker.additionalObjects.Add(gameObject.transform);
 					}
 				}
 				listView.RefreshItems();
@@ -128,7 +128,7 @@ namespace ARMenu.Scripts.Editor.Baker
 		{
 			bakeButton.RegisterCallback<MouseUpEvent>(evt =>
 			{
-				_dishBaker.BakeImages();
+				_objectsBaker.BakeImages();
 			});
 		}
 	}

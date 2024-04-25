@@ -5,6 +5,9 @@ using UnityEngine;
 
 namespace ARMenu.Scripts.Editor.Addressables
 {
+	/// <summary>
+	/// An additional build class for calling the necessary AR functions before building Addressables.
+	/// </summary>
 	[CreateAssetMenu(fileName = nameof(BuildScriptPackedModeWithXR), menuName = "Addressables/Content Builders/XR Build Script")]
 	public class BuildScriptPackedModeWithXR : BuildScriptPackedMode
 	{

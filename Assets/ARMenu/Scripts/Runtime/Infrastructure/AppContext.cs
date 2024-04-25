@@ -5,16 +5,16 @@ namespace ARMenu.Scripts.Runtime.Infrastructure
 {
 	public class AppContext
 	{
-		private Dictionary<Type, object> _registeredTypes = new();
+		private readonly Dictionary<Type, object> _registered = new();
 
 		public void Register<T>(T instance)
 		{
-			_registeredTypes.Add(typeof(T), instance);
+			_registered.Add(typeof(T), instance);
 		}
 
 		public T Resolve<T>()
 		{
-			return (T)_registeredTypes[typeof(T)];
+			return (T)_registered[typeof(T)];
 		}
 	}
 }
