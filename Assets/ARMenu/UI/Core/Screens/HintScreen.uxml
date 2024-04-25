@@ -2,6 +2,6 @@
     <Style src="project://database/Assets/ARMenu/UI/Core/Styles/DishDescriptionStyle.uss?fileID=7433441132597879392&amp;guid=3f1c2b82ca61dda42a2556311c172ef4&amp;type=3#DishDescriptionStyle" />
     <Style src="project://database/Assets/ARMenu/UI/Core/Styles/GeneralStyle.uss?fileID=7433441132597879392&amp;guid=a7ef1eda0683df1449405c95b2ddf347&amp;type=3#GeneralStyle" />
     <ui:VisualElement name="ScreenContainer" style="width: 100%; height: 100%; justify-content: center;">
-        <ui:Label text="Please, scan QR code" name="HintText" class="unity-label" style="-unity-text-align: middle-center; font-size: 72px; color: rgb(255, 255, 255); background-color: rgba(0, 0, 0, 0.29);" />
+        <ui:Label text="Please, scan QR code" name="HintText" class="unity-label" style="-unity-text-align: middle-center; font-size: 56px; color: rgb(255, 255, 255); background-color: rgba(0, 0, 0, 0.29); padding-right: 25px; padding-left: 25px;" />
     </ui:VisualElement>
 </ui:UXML>
