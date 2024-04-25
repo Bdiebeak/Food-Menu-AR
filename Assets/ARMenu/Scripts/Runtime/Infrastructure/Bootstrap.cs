@@ -12,9 +12,7 @@ namespace ARMenu.Scripts.Runtime.Infrastructure
 	/// <summary>
 	/// Isn't the best bootstrap logic.
 	/// But this is enough for me and this example project, I don't want to complicate it.
-	/// There could be some additional factories e.g. UIFactory or CoreFactory.
-	///
-	/// Bootstrap only do registration of services.
+	/// There could be some additional factories or etc. And some DI-Container.
 	/// </summary>
 	public class Bootstrap : MonoBehaviour
 	{
@@ -23,17 +21,7 @@ namespace ARMenu.Scripts.Runtime.Infrastructure
 		public CoreRunner coreRunnerPrefab;
 		public UIDocument coreUIPrefab;
 
-		private ARTrackedImageManager _imageManager;
-		private ARSession _arSession;
-		private UIDocument _coreUI;
-		private CoreRunner _coreRunner;
-
-		private IAssetProvider _assetProvider;
-		private IImageTracker _imageTracker;
-		private IScreenService _screenService;
-
-		private DishDescriptionViewModel _dishScreenModel;
-		private HintViewModel _hintScreenModel;
+		private AppContext _appContext;
 
 		private void Awake()
 		{
@@ -42,6 +30,8 @@ namespace ARMenu.Scripts.Runtime.Infrastructure
 
 		private void Initialize()
 		{
+			_appContext = new AppContext();
+
 			InstantiatePrefabs();
 			InitializeServices();
 			InitializeScreens();
@@ -50,30 +40,34 @@ namespace ARMenu.Scripts.Runtime.Infrastructure
 
 		private void InstantiatePrefabs()
 		{
-			_imageManager = Instantiate(trackedImageManagerPrefab);
-			_arSession = Instantiate(arSessionPrefab);
-			_coreUI = Instantiate(coreUIPrefab);
-			_coreRunner = Instantiate(coreRunnerPrefab);
+			_appContext.Register(Instantiate(trackedImageManagerPrefab));
+			_appContext.Register(Instantiate(arSessionPrefab));
+			_appContext.Register(Instantiate(coreUIPrefab));
+			_appContext.Register(Instantiate(coreRunnerPrefab));
 		}
 
 		private void InitializeServices()
 		{
-			_assetProvider = new AssetProvider();
-			_imageTracker = new SingleImageTracker(_imageManager);
-			_screenService = new ScreenService();
+			_appContext.Register<IAssetProvider>(new AssetProvider());
+			_appContext.Register<IImageTracker>(new SingleImageTracker(_appContext));
+			_appContext.Register<IScreenService>(new ScreenService());
 		}
 
 		private void InitializeScreens()
 		{
-			_dishScreenModel = new DishDescriptionViewModel();
-			_hintScreenModel = new HintViewModel();
-			_screenService.RegisterScreen(new DishDescriptionUxmlScreen(_coreUI, _dishScreenModel));
-			_screenService.RegisterScreen(new HintUxmlScreen(_coreUI, _hintScreenModel));
+			_appContext.Register(new DishDescriptionViewModel());
+			_appContext.Register(new HintViewModel());
+
+			IScreenService screenService = _appContext.Resolve<IScreenService>();
+			screenService.RegisterScreen(new DishDescriptionUxmlScreen(_appContext.Resolve<UIDocument>(),
+																	   _appContext.Resolve<DishDescriptionViewModel>()));
+			screenService.RegisterScreen(new HintUxmlScreen(_appContext.Resolve<UIDocument>(),
+															_appContext.Resolve<HintViewModel>()));
 		}
 
 		private void InitializeCore()
 		{
-			_coreRunner.Initialize(_assetProvider, _imageTracker, _screenService, _dishScreenModel, _hintScreenModel);
+			_appContext.Resolve<CoreRunner>().Construct(_appContext);
 		}
 	}
 }

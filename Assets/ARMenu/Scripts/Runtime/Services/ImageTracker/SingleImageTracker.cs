@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
+using AppContext = ARMenu.Scripts.Runtime.Infrastructure.AppContext;
 
 namespace ARMenu.Scripts.Runtime.Services.ImageTracker
 {
@@ -19,9 +20,9 @@ namespace ARMenu.Scripts.Runtime.Services.ImageTracker
 
 		private readonly ARTrackedImageManager _trackedImageManager;
 
-		public SingleImageTracker(ARTrackedImageManager trackedImageManager)
+		public SingleImageTracker(AppContext appContext)
 		{
-			_trackedImageManager = trackedImageManager;
+			_trackedImageManager = appContext.Resolve<ARTrackedImageManager>();
 		}
 
 		public void Initialize(XRReferenceImageLibrary imageLibrary)

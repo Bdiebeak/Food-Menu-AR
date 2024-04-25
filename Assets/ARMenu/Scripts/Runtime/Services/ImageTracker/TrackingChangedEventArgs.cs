@@ -1,6 +1,5 @@
 ﻿using System;
 using UnityEngine.XR.ARFoundation;
-using UnityEngine.XR.ARSubsystems;
 
 namespace ARMenu.Scripts.Runtime.Services.ImageTracker
 {

@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using ARMenu.Scripts.Runtime.Data;
 using ARMenu.Scripts.Runtime.Data.ImageLibrary.Dishes;
+using ARMenu.Scripts.Runtime.Infrastructure;
 using ARMenu.Scripts.Runtime.Services.AssetProvider;
 using ARMenu.Scripts.Runtime.Services.ImageTracker;
 using ARMenu.Scripts.Runtime.Services.ScreenService;
@@ -18,28 +19,27 @@ namespace ARMenu.Scripts.Runtime.Logic
 		private readonly IAssetProvider _assetProvider;
 		private readonly IImageTracker _imageTracker;
 		private readonly IScreenService _screenService;
-		private readonly DishImageLibrary _imageLibrary;
 		private readonly DishDescriptionViewModel _dishDescriptionModel;
 		private readonly HintViewModel _hintScreenModel;
 
         private readonly Dictionary<XRReferenceImage, TaskCompletionSource<Dish>> _completionSources = new();
         private readonly Dictionary<XRReferenceImage, GameObject> _spawnedDishes = new();
+		private DishImageLibrary _imageLibrary;
 		private ARTrackedImage _currentImage;
 
-		public DishCreator(IAssetProvider assetProvider, IImageTracker imageTracker,
-						   IScreenService screenService, DishImageLibrary imageLibrary,
-						   DishDescriptionViewModel dishDescriptionModel, HintViewModel hintScreenModel)
+		public DishCreator(AppContext appContext)
 		{
-			_assetProvider = assetProvider;
-			_imageTracker = imageTracker;
-			_screenService = screenService;
-			_imageLibrary = imageLibrary;
-			_dishDescriptionModel = dishDescriptionModel;
-			_hintScreenModel = hintScreenModel;
+			_assetProvider = appContext.Resolve<IAssetProvider>();
+			_imageTracker = appContext.Resolve<IImageTracker>();
+			_screenService = appContext.Resolve<IScreenService>();
+			_dishDescriptionModel = appContext.Resolve<DishDescriptionViewModel>();
+			_hintScreenModel = appContext.Resolve<HintViewModel>();
 		}
 
-		public void Initialize()
+		public void Initialize(DishImageLibrary imageLibrary)
 		{
+			_imageLibrary = imageLibrary;
+
 			ShowHintScreen("Please, scan a QR code.");
 
 			_imageTracker.Added += OnImageTrackerAdded;
