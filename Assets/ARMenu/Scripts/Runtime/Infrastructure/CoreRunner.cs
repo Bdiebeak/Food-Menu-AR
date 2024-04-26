@@ -55,7 +55,6 @@ namespace ARMenu.Scripts.Runtime.Infrastructure
 			_screenService.Show<HintUxmlScreen>();
 			_hintScreenModel.SetHint("Loading required data...");
 
-			// TODO: check boxing?
 			var generalAssets = await _assetProvider.LoadAssetsByLabel<object>(new List<string> { AssetLabels.BurgersLabel, AssetLabels.GeneralLabel });
 			foreach (object asset in generalAssets)
 			{
