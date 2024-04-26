@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.ResourceManagement.ResourceLocations;
 
 namespace ARMenu.Scripts.Runtime.Services.AssetProvider
 {
@@ -22,16 +22,39 @@ namespace ARMenu.Scripts.Runtime.Services.AssetProvider
 			{
 				ReleaseByHandle(handle);
 			}
+			_completedHandles.Clear();
+
+			foreach (AsyncOperationHandle handle in _processingHandles.Values)
+			{
+				ReleaseByHandle(handle);
+			}
+			_processingHandles.Clear();
 		}
 
-		public async Task<T> LoadAssetAsync<T>(string assetKey) where T : class
+		public async Task<IList<TAsset>> LoadAssetsByLabel<TAsset>(IList<string> labels) where TAsset : class
 		{
-			return await Load<T>(assetKey);
+			var locationsHandle = Addressables.LoadResourceLocationsAsync(labels, Addressables.MergeMode.Intersection);
+			var locations = await locationsHandle.Task;
+
+			List<TAsset> loadedAssets = new();
+			foreach (IResourceLocation location in locations)
+			{
+				TAsset asset = await LoadAssetAsync<TAsset>(location.PrimaryKey);
+				loadedAssets.Add(asset);
+			}
+
+			Addressables.Release(locationsHandle);
+			return loadedAssets;
 		}
 
-		public async Task<T> LoadAssetAsync<T>(AssetReference assetReference) where T : class
+		public async Task<TAsset> LoadAssetAsync<TAsset>(string assetKey) where TAsset : class
 		{
-			return await Load<T>(assetReference.AssetGUID);
+			return await Load<TAsset>(assetKey);
+		}
+
+		public async Task<TAsset> LoadAssetAsync<TAsset>(AssetReference assetReference) where TAsset : class
+		{
+			return await Load<TAsset>(assetReference.AssetGUID);
 		}
 
 		public void ReleaseAsset(string assetKey)
@@ -56,25 +79,24 @@ namespace ARMenu.Scripts.Runtime.Services.AssetProvider
 			}
 		}
 
-		private async Task<T> Load<T>(string assetKey) where T : class
+		private async Task<TAsset> Load<TAsset>(string assetKey) where TAsset : class
 		{
 			// If asset with required key was already loaded - return result of operation.
 			if (_completedHandles.TryGetValue(assetKey, out AsyncOperationHandle completeHandle))
 			{
-				return completeHandle.Result as T;
+				return completeHandle.Result as TAsset;
 			}
 
 			// If asset with required key is loading right now - return this task.
 			if (_processingHandles.TryGetValue(assetKey, out AsyncOperationHandle processingHandle))
 			{
-				return processingHandle.Task as T;
+				return processingHandle.Task as TAsset;
 			}
 
-			AsyncOperationHandle<T> loadingOperation = Addressables.LoadAssetAsync<T>(assetKey);
+			AsyncOperationHandle<TAsset> loadingOperation = Addressables.LoadAssetAsync<TAsset>(assetKey);
 			_processingHandles.Add(assetKey, loadingOperation);
 
 			await loadingOperation.Task;
-			await Awaitable.WaitForSecondsAsync(3); // TODO: remove test only.
 
 			_completedHandles.Add(assetKey, loadingOperation);
 			_processingHandles.Remove(assetKey);

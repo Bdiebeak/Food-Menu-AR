@@ -15,9 +15,9 @@ MonoBehaviour:
   m_DefaultGroup: 19d1e8c2ab44c704a9154dc4515bfd0f
   m_currentHash:
     serializedVersion: 2
-    Hash: 298e22707d1ae09f73e625f5e0ff2c12
+    Hash: 00000000000000000000000000000000
   m_OptimizeCatalogSize: 0
-  m_BuildRemoteCatalog: 0
+  m_BuildRemoteCatalog: 1
   m_CatalogRequestsTimeout: 0
   m_DisableCatalogUpdateOnStart: 0
   m_InternalIdNamingMode: 0
@@ -85,6 +85,34 @@ MonoBehaviour:
     - m_InheritedParent: 
       m_Id: fb53cab7deeb7d44ca4e0f813eb58087
       m_ProfileName: Local
+      m_Values:
+      - m_Id: 8b6f3c764278e0a45a96d608c3948346
+        m_Value: '[UnityEditor.EditorUserBuildSettings.activeBuildTarget]'
+      - m_Id: 7f8a9c69c0d8d5045830eff2ff611c4d
+        m_Value: '[UnityEngine.AddressableAssets.Addressables.BuildPath]/[BuildTarget]'
+      - m_Id: d6ff5e2d6c7cfdc449cadef6feae72bd
+        m_Value: '{UnityEngine.AddressableAssets.Addressables.RuntimePath}/[BuildTarget]'
+      - m_Id: 47ae1a3200adbdf4dbb24ecfea8703f1
+        m_Value: '[UnityEngine.AddressableAssets.Addressables.BuildPath]/[BuildTarget]'
+      - m_Id: 31cea916e7d7ec04c8eaeddc2ce8937a
+        m_Value: '{UnityEngine.AddressableAssets.Addressables.RuntimePath}/[BuildTarget]'
+    - m_InheritedParent: 
+      m_Id: a1812c8ad98e3cd4b85128409220993b
+      m_ProfileName: Remote
+      m_Values:
+      - m_Id: 8b6f3c764278e0a45a96d608c3948346
+        m_Value: '[UnityEditor.EditorUserBuildSettings.activeBuildTarget]'
+      - m_Id: 7f8a9c69c0d8d5045830eff2ff611c4d
+        m_Value: '[UnityEngine.AddressableAssets.Addressables.BuildPath]/[BuildTarget]'
+      - m_Id: d6ff5e2d6c7cfdc449cadef6feae72bd
+        m_Value: '{UnityEngine.AddressableAssets.Addressables.RuntimePath}/[BuildTarget]'
+      - m_Id: 47ae1a3200adbdf4dbb24ecfea8703f1
+        m_Value: 'ServerData/[BuildTarget]'
+      - m_Id: 31cea916e7d7ec04c8eaeddc2ce8937a
+        m_Value: <undefined>
+    - m_InheritedParent: 
+      m_Id: 8448dd817d8f19849bdc2975239e700e
+      m_ProfileName: EditorRemote
       m_Values:
       - m_Id: 8b6f3c764278e0a45a96d608c3948346
         m_Value: '[UnityEditor.EditorUserBuildSettings.activeBuildTarget]'

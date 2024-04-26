@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using ARMenu.Scripts.Runtime.Data.ImageLibrary.Dishes;
 using ARMenu.Scripts.Runtime.Infrastructure.Constants;
 using ARMenu.Scripts.Runtime.Logic;
@@ -36,21 +37,40 @@ namespace ARMenu.Scripts.Runtime.Infrastructure
 		private async void Start()
 		{
 			await _assetProvider.InitializeAsync();
-			await InitializeMenu(AssetKeys.BurgersLibraryKey);
+			await InitializeMenu();
 		}
 
 		/// <summary>
 		/// This function can be called to load image library by asset key and initialize logic classes.
 		/// But it can be called only once without reloading the scene, because <see cref="UnityEngine.XR.ARFoundation.ARTrackedImageManager"/>
 		/// doesn't support reinitialization.
+		///
+		/// Right now, all menu data paths are hard coded to use the Burger menu.
+		/// If you want to add some logic, such as scanning a QR code to get a restaurant key and download general assets,
+		/// I recommend to scan QR code on different scene and initialize AR Foundation in another.
+		/// Each time, when you want to check new menu, you should go back to QR code scene and start over.
 		/// </summary>
-		/// <param name="libraryAssetKey"> Asset key to load library. </param>
-		private async Task InitializeMenu(string libraryAssetKey)
+		private async Task InitializeMenu()
 		{
 			_screenService.Show<HintUxmlScreen>();
 			_hintScreenModel.SetHint("Loading required data...");
 
-			_imageLibrary = await _assetProvider.LoadAssetAsync<DishImageLibrary>(libraryAssetKey);
+			// TODO: check boxing?
+			var generalAssets = await _assetProvider.LoadAssetsByLabel<object>(new List<string> { AssetLabels.BurgersLabel, AssetLabels.GeneralLabel });
+			foreach (object asset in generalAssets)
+			{
+				if (asset is DishImageLibrary library)
+				{
+					_imageLibrary = library;
+					break; // Exit from foreach when library is found.
+				}
+			}
+
+			if (_imageLibrary == null)
+			{
+				Debug.LogError("Can't find Dish Image Library in general assets of menu.");
+				return;
+			}
 
 			_imageTracker.Initialize(_imageLibrary.XRReferenceImageLibrary);
 			_dishCreator.Initialize(_imageLibrary);
