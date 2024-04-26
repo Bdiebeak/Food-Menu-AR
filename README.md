@@ -1,31 +1,30 @@
 # FoodMenuAR
 ## DESCRIPTION
----
 This is a basic implementation of an AR menu.  
 This project isn't for production, it covers the goals that I conceived and are described below. Therefore, some parts of this project may seem strange to you. You are free to use it for any purposes and adapt it according to your needs.  
 
 ## MAIN GOALS
----
 Initially, this project was designed to help me pass a university subject. However, after a few years, I decided to redesign it to use as a portfolio.  
-I aimed to focus on:  
+I aimed to focus on:
 - System that would be easy to extend with new data and menus;  
-- Logic only by using standard Unity libraries;  
-I wanted to work with few things:  
+- Logic only by using standard Unity libraries;
+
+
+I also wanted to work with several things:
 - New Unity 6 version;  
 - Augmented Reality;  
 - New UI Toolkit;  
 - Addressables;  
 
 ## GENERAL IMPLEMENTED FEATURES
----
 ### SHOWCASE
-![](https://github.com/Bdiebeak/FoodMenuAR/GitDescription/ARMenu-Showcase.gif)  
+![](https://github.com/Bdiebeak/Food-Menu-AR/blob/master/GitDescription/ARMenu-Showcase.gif)
 
 ### AR
 Self-made wrapper of internal `ImageLibrary` to easily set up data and bind it to the XR reference images. Custom `Tracker` to work with only one `TrackableImage` at time.  
 
 ### ADDRESSABLES
-Addressables were set up in project and tested on local server. With them you can easily update asset data without the rebuilding of whole application.  
+Addressables were set up in project and tested on local server. With them you can easily update asset data without the rebuilding of whole application. And manage different menus.
 
 ### EDITOR EXTENSIONS
 The editor window allows you to bake a dish and it's ingredients with just one click.  
