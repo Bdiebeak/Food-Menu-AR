@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b522884fdb37be42910b7c0b5efbc24, type: 3}
+  m_Name: Cheeseburger
+  m_EditorClassIdentifier: 
+  title: Cheeseburger
+  description: Indulge in our mouthwatering Cheeseburger, boasting a succulent beef
+    patty, extra cheese slices, and crisp lettuce, all hugged by our cheesy bun.
+  weight: 300
+  cost: 1.5
+  nutritionalInfo:
+    calories: 900
+    carbohydrates: 45
+    fats: 65
+    proteins: 45
+  ingredients:
+  - {fileID: 11400000, guid: 8a5a47d339b32614e936217a15927b55, type: 2}
+  - {fileID: 11400000, guid: bcfaa6aa83b33544ab8092ede3d465a6, type: 2}
+  - {fileID: 11400000, guid: 7990ce40fee2c1c4ab8f2c36a2b91180, type: 2}
+  - {fileID: 11400000, guid: 8cf584145c117344ebce8738e8451c4c, type: 2}
+  prefab: {fileID: 5587850728997606781, guid: f7acb65df194c674e83f095b40b20c87, type: 3}
+  previewImage: {fileID: 2800000, guid: e49b13e0595bd8e42a731a596b9ab4ed, type: 3}

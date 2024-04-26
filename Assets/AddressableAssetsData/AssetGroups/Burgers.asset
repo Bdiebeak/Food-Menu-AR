@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Burgers
+  m_EditorClassIdentifier: 
+  m_GroupName: Burgers
+  m_GUID: dfdc9fab0920b324bbc245f1cda4ef57
+  m_SerializeEntries:
+  - m_GUID: c91309361c15a1945b58bbc24a58ddc8
+    m_Address: Extraburger
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Burgers
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2200cbf87f66d34469168dbc1b87ab12
+    m_Address: Cheeseburger
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Burgers
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 23f97cc3477f0e244876405b941cd517
+    m_Address: Ingredients
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Burgers
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 15eb580eba61f034fb70bf8c4e0369cf
+    m_Address: General
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Burgers
+    - General
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: b0ec763825f456544a9f768b32b5a591, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: e84176bafaef28544978d626f81c0aae, type: 2}
+    - {fileID: 11400000, guid: 2aaf0617c76ae374cb73cfec8c8dac6c, type: 2}

@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b522884fdb37be42910b7c0b5efbc24, type: 3}
+  m_Name: Extraburger
+  m_EditorClassIdentifier: 
+  title: Extraburger
+  description: Experience ultimate satisfaction with our Extraburger, featuring a
+    succulent beef patty, crispy bacon, fried egg, and fresh toppings.
+  weight: 450
+  cost: 2.5
+  nutritionalInfo:
+    calories: 1300
+    carbohydrates: 65
+    fats: 80
+    proteins: 65
+  ingredients:
+  - {fileID: 11400000, guid: d67623f7eaf3c274e8a9dfe3dad1aeaa, type: 2}
+  - {fileID: 11400000, guid: 364ad1f7103ff6149a14d4ba83b0512a, type: 2}
+  - {fileID: 11400000, guid: 8cf584145c117344ebce8738e8451c4c, type: 2}
+  - {fileID: 11400000, guid: 6ca2e2047671b274ebe70316f99e539d, type: 2}
+  - {fileID: 11400000, guid: 1d5ba7b2341ee014e924a530dccd81af, type: 2}
+  - {fileID: 11400000, guid: e8ccc680b43f83e4f8c35df55e21b2c0, type: 2}
+  - {fileID: 11400000, guid: 696f931dee8537f44b2d6d0ecd06ff73, type: 2}
+  - {fileID: 11400000, guid: 7990ce40fee2c1c4ab8f2c36a2b91180, type: 2}
+  prefab: {fileID: 1424565209676324907, guid: 31d234fe70f2d5241ba28171b114683a, type: 3}
+  previewImage: {fileID: 2800000, guid: a8bb3655105e5504d830fbfa8dd1ec6b, type: 3}

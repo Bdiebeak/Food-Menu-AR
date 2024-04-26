@@ -1,0 +1,12 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/ARMenu/UI/Core/Styles/DishDescriptionStyle.uss?fileID=7433441132597879392&amp;guid=3f1c2b82ca61dda42a2556311c172ef4&amp;type=3#DishDescriptionStyle" />
+    <ui:VisualElement name="GeneralContent" style="width: 100%; height: 100%;">
+        <ui:Label text="NAME" name="DishName" class="header" />
+        <ui:VisualElement name="DescriptionContent" style="width: 100%; height: 100%;">
+            <ui:VisualElement name="DishImage" class="preview-image" />
+            <ui:ScrollView horizontal-page-size="0" vertical-page-size="0" horizontal-scroller-visibility="Hidden" style="height: 50%;">
+                <ui:Label text="Description text about general dish here." name="DishDescription" class="description" />
+            </ui:ScrollView>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
