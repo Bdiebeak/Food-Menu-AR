@@ -1,4 +1,5 @@
-﻿using ARMenu.Scripts.Runtime.Services.AssetProvider;
+﻿using ARMenu.Scripts.Runtime.Logic;
+using ARMenu.Scripts.Runtime.Services.AssetProvider;
 using ARMenu.Scripts.Runtime.Services.ImageTracker;
 using ARMenu.Scripts.Runtime.Services.ScreenService;
 using ARMenu.Scripts.Runtime.UI.DishDescription;
@@ -67,7 +68,16 @@ namespace ARMenu.Scripts.Runtime.Infrastructure
 
 		private void InitializeCore()
 		{
-			_appContext.Resolve<CoreRunner>().Construct(_appContext);
+			_appContext.Register(new DishCreator(_appContext.Resolve<IAssetProvider>(),
+												 _appContext.Resolve<IImageTracker>(),
+												 _appContext.Resolve<IScreenService>(),
+												 _appContext.Resolve<DishDescriptionViewModel>(),
+												 _appContext.Resolve<HintViewModel>()));
+			_appContext.Resolve<CoreRunner>().Construct(_appContext.Resolve<IAssetProvider>(),
+														_appContext.Resolve<IImageTracker>(),
+														_appContext.Resolve<IScreenService>(),
+														_appContext.Resolve<HintViewModel>(),
+														_appContext.Resolve<DishCreator>());
 		}
 	}
 }

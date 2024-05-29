@@ -21,17 +21,18 @@ namespace ARMenu.Scripts.Runtime.Infrastructure
 		private IImageTracker _imageTracker;
 		private IScreenService _screenService;
 		private HintViewModel _hintScreenModel;
-
 		private DishImageLibrary _imageLibrary;
 		private DishCreator _dishCreator;
 
-		public void Construct(AppContext appContext)
+		public void Construct(IAssetProvider assetProvider, IImageTracker imageTracker,
+							  IScreenService screenService, HintViewModel hintViewModel,
+							  DishCreator dishCreator)
 		{
-			_assetProvider = appContext.Resolve<IAssetProvider>();
-			_imageTracker = appContext.Resolve<IImageTracker>();
-			_screenService = appContext.Resolve<IScreenService>();
-			_hintScreenModel = appContext.Resolve<HintViewModel>();
-			_dishCreator = new DishCreator(appContext);
+			_assetProvider = assetProvider;
+			_imageTracker = imageTracker;
+			_screenService = screenService;
+			_hintScreenModel = hintViewModel;
+			_dishCreator = dishCreator;
 		}
 
 		private async void Start()

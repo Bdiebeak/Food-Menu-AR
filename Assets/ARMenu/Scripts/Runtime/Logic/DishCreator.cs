@@ -31,13 +31,14 @@ namespace ARMenu.Scripts.Runtime.Logic
 		private DishImageLibrary _imageLibrary;
 		private ARTrackedImage _currentImage;
 
-		public DishCreator(AppContext appContext)
+		public DishCreator(IAssetProvider assetProvider, IImageTracker imageTracker, IScreenService screenService,
+						   DishDescriptionViewModel dishDescriptionViewModel, HintViewModel hintViewModel)
 		{
-			_assetProvider = appContext.Resolve<IAssetProvider>();
-			_imageTracker = appContext.Resolve<IImageTracker>();
-			_screenService = appContext.Resolve<IScreenService>();
-			_dishDescriptionModel = appContext.Resolve<DishDescriptionViewModel>();
-			_hintScreenModel = appContext.Resolve<HintViewModel>();
+			_assetProvider = assetProvider;
+			_imageTracker = imageTracker;
+			_screenService = screenService;
+			_dishDescriptionModel = dishDescriptionViewModel;
+			_hintScreenModel = hintViewModel;
 		}
 
 		public void Initialize(DishImageLibrary imageLibrary)
